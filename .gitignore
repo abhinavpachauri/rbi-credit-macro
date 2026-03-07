@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.xlsx
+*_statement1_long.csv
+*_statement1_wide.csv
+*_statement2_long.csv
+*_statement2_wide.csv
+.DS_Store

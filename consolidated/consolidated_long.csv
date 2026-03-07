@@ -1,0 +1,431 @@
+report_date,statement,code,sector,level,is_priority_sector_memo,parent_code,parent_statement,date,outstanding_cr
+2026-02-27,Statement 1,1,Agriculture and Allied Activities,1,False,III,Statement 1,2024-01-26,2009098.33619
+2026-02-27,Statement 1,1,Agriculture and Allied Activities,1,False,III,Statement 1,2024-03-22,2071250.995736
+2026-02-27,Statement 1,1,Agriculture and Allied Activities,1,False,III,Statement 1,2025-01-24,2253510.284899
+2026-02-27,Statement 1,1,Agriculture and Allied Activities,1,False,III,Statement 1,2025-03-21,2287060.099496
+2026-02-27,Statement 1,1,Agriculture and Allied Activities,1,False,III,Statement 1,2026-01-31,2509788.529016
+2026-02-27,Statement 1,2,"Industry (Micro and Small, Medium and Large)",1,False,III,Statement 1,2024-01-26,3614409.354535
+2026-02-27,Statement 1,2,"Industry (Micro and Small, Medium and Large)",1,False,III,Statement 1,2024-03-22,3682392.531552
+2026-02-27,Statement 1,2,"Industry (Micro and Small, Medium and Large)",1,False,III,Statement 1,2025-01-24,3913968.873477
+2026-02-27,Statement 1,2,"Industry (Micro and Small, Medium and Large)",1,False,III,Statement 1,2025-03-21,3985659.551324
+2026-02-27,Statement 1,2,"Industry (Micro and Small, Medium and Large)",1,False,III,Statement 1,2026-01-31,4388307.777559
+2026-02-27,Statement 1,2.1,Micro and Small,2,False,2,Statement 1,2024-01-26,717262.458437
+2026-02-27,Statement 1,2.1,Micro and Small,2,False,2,Statement 1,2024-03-22,733123.356073
+2026-02-27,Statement 1,2.1,Micro and Small,2,False,2,Statement 1,2025-01-24,786045.977257
+2026-02-27,Statement 1,2.1,Micro and Small,2,False,2,Statement 1,2025-03-21,798472.66076
+2026-02-27,Statement 1,2.1,Micro and Small,2,False,2,Statement 1,2026-01-31,1031291.398699
+2026-02-27,Statement 1,2.2,Medium,2,False,2,Statement 1,2024-01-26,294398.357935
+2026-02-27,Statement 1,2.2,Medium,2,False,2,Statement 1,2024-03-22,306424.853962
+2026-02-27,Statement 1,2.2,Medium,2,False,2,Statement 1,2025-01-24,348614.49414
+2026-02-27,Statement 1,2.2,Medium,2,False,2,Statement 1,2025-03-21,363245.019249
+2026-02-27,Statement 1,2.2,Medium,2,False,2,Statement 1,2026-01-31,426210.574042
+2026-02-27,Statement 1,2.3,Large,2,False,2,Statement 1,2024-01-26,2602748.538163
+2026-02-27,Statement 1,2.3,Large,2,False,2,Statement 1,2024-03-22,2642844.321517
+2026-02-27,Statement 1,2.3,Large,2,False,2,Statement 1,2025-01-24,2779308.40208
+2026-02-27,Statement 1,2.3,Large,2,False,2,Statement 1,2025-03-21,2823941.871316
+2026-02-27,Statement 1,2.3,Large,2,False,2,Statement 1,2026-01-31,2930805.804818
+2026-02-27,Statement 1,3,Services,1,False,III,Statement 1,2024-01-26,4413917.309734
+2026-02-27,Statement 1,3,Services,1,False,III,Statement 1,2024-03-22,4547236.765609
+2026-02-27,Statement 1,3,Services,1,False,III,Statement 1,2025-01-24,4956419.412659
+2026-02-27,Statement 1,3,Services,1,False,III,Statement 1,2025-03-21,5093565.107574
+2026-02-27,Statement 1,3,Services,1,False,III,Statement 1,2026-01-31,5722969.386434
+2026-02-27,Statement 1,3.1,Transport Operators,2,False,3,Statement 1,2024-01-26,229245.519436
+2026-02-27,Statement 1,3.1,Transport Operators,2,False,3,Statement 1,2024-03-22,232379.233542
+2026-02-27,Statement 1,3.1,Transport Operators,2,False,3,Statement 1,2025-01-24,256722.100266
+2026-02-27,Statement 1,3.1,Transport Operators,2,False,3,Statement 1,2025-03-21,261574.761822
+2026-02-27,Statement 1,3.1,Transport Operators,2,False,3,Statement 1,2026-01-31,267665.467105
+2026-02-27,Statement 1,3.10,Other Services,2,False,3,Statement 1,2024-01-26,937242.20701
+2026-02-27,Statement 1,3.10,Other Services,2,False,3,Statement 1,2024-03-22,985814.5735490001
+2026-02-27,Statement 1,3.10,Other Services,2,False,3,Statement 1,2025-01-24,1081788.571738
+2026-02-27,Statement 1,3.10,Other Services,2,False,3,Statement 1,2025-03-21,1123459.106523
+2026-02-27,Statement 1,3.10,Other Services,2,False,3,Statement 1,2026-01-31,1235949.0857960002
+2026-02-27,Statement 1,3.2,Computer Software,2,False,3,Statement 1,2024-01-26,26311.61461
+2026-02-27,Statement 1,3.2,Computer Software,2,False,3,Statement 1,2024-03-22,25917.345642
+2026-02-27,Statement 1,3.2,Computer Software,2,False,3,Statement 1,2025-01-24,33728.476663
+2026-02-27,Statement 1,3.2,Computer Software,2,False,3,Statement 1,2025-03-21,32915.202169
+2026-02-27,Statement 1,3.2,Computer Software,2,False,3,Statement 1,2026-01-31,40694.804478
+2026-02-27,Statement 1,3.3,"Tourism, Hotels and Restaurants",2,False,3,Statement 1,2024-01-26,77263.269059
+2026-02-27,Statement 1,3.3,"Tourism, Hotels and Restaurants",2,False,3,Statement 1,2024-03-22,77815.892939
+2026-02-27,Statement 1,3.3,"Tourism, Hotels and Restaurants",2,False,3,Statement 1,2025-01-24,81753.210904
+2026-02-27,Statement 1,3.3,"Tourism, Hotels and Restaurants",2,False,3,Statement 1,2025-03-21,83366.436558
+2026-02-27,Statement 1,3.3,"Tourism, Hotels and Restaurants",2,False,3,Statement 1,2026-01-31,97417.581234
+2026-02-27,Statement 1,3.4,Shipping,2,False,3,Statement 1,2024-01-26,7104.155535
+2026-02-27,Statement 1,3.4,Shipping,2,False,3,Statement 1,2024-03-22,7066.78
+2026-02-27,Statement 1,3.4,Shipping,2,False,3,Statement 1,2025-01-24,7180.04
+2026-02-27,Statement 1,3.4,Shipping,2,False,3,Statement 1,2025-03-21,7304.35
+2026-02-27,Statement 1,3.4,Shipping,2,False,3,Statement 1,2026-01-31,10373.17
+2026-02-27,Statement 1,3.5,Aviation,2,False,3,Statement 1,2024-01-26,44404.64971
+2026-02-27,Statement 1,3.5,Aviation,2,False,3,Statement 1,2024-03-22,43283.01
+2026-02-27,Statement 1,3.5,Aviation,2,False,3,Statement 1,2025-01-24,44823.34
+2026-02-27,Statement 1,3.5,Aviation,2,False,3,Statement 1,2025-03-21,46071.8
+2026-02-27,Statement 1,3.5,Aviation,2,False,3,Statement 1,2026-01-31,49613.17
+2026-02-27,Statement 1,3.6,Professional Services,2,False,3,Statement 1,2024-01-26,161391.209466
+2026-02-27,Statement 1,3.6,Professional Services,2,False,3,Statement 1,2024-03-22,167234.647086
+2026-02-27,Statement 1,3.6,Professional Services,2,False,3,Statement 1,2025-01-24,190863.111841
+2026-02-27,Statement 1,3.6,Professional Services,2,False,3,Statement 1,2025-03-21,195956.642789
+2026-02-27,Statement 1,3.6,Professional Services,2,False,3,Statement 1,2026-01-31,209053.746799
+2026-02-27,Statement 1,3.7,Trade,2,False,3,Statement 1,2024-01-26,984726.180606
+2026-02-27,Statement 1,3.7,Trade,2,False,3,Statement 1,2024-03-22,1024407.716289
+2026-02-27,Statement 1,3.7,Trade,2,False,3,Statement 1,2025-01-24,1127156.363535
+2026-02-27,Statement 1,3.7,Trade,2,False,3,Statement 1,2025-03-21,1184550.226859
+2026-02-27,Statement 1,3.7,Trade,2,False,3,Statement 1,2026-01-31,1309115.360266
+2026-02-27,Statement 1,3.7.1,Wholesale Trade,3,False,3.7,Statement 1,2024-01-26,515587.699659
+2026-02-27,Statement 1,3.7.1,Wholesale Trade,3,False,3.7,Statement 1,2024-03-22,537188.975284
+2026-02-27,Statement 1,3.7.1,Wholesale Trade,3,False,3.7,Statement 1,2025-01-24,608691.612733
+2026-02-27,Statement 1,3.7.1,Wholesale Trade,3,False,3.7,Statement 1,2025-03-21,646098.731744
+2026-02-27,Statement 1,3.7.1,Wholesale Trade,3,False,3.7,Statement 1,2026-01-31,723122.343866
+2026-02-27,Statement 1,3.7.2,Retail Trade,3,False,3.7,Statement 1,2024-01-26,469138.480947
+2026-02-27,Statement 1,3.7.2,Retail Trade,3,False,3.7,Statement 1,2024-03-22,487218.741004
+2026-02-27,Statement 1,3.7.2,Retail Trade,3,False,3.7,Statement 1,2025-01-24,518464.750802
+2026-02-27,Statement 1,3.7.2,Retail Trade,3,False,3.7,Statement 1,2025-03-21,538451.495115
+2026-02-27,Statement 1,3.7.2,Retail Trade,3,False,3.7,Statement 1,2026-01-31,585993.0164
+2026-02-27,Statement 1,3.8,Commercial Real Estate,2,False,3,Statement 1,2024-01-26,450810.92745
+2026-02-27,Statement 1,3.8,Commercial Real Estate,2,False,3,Statement 1,2024-03-22,460263.097704
+2026-02-27,Statement 1,3.8,Commercial Real Estate,2,False,3,Statement 1,2025-01-24,514506.43005
+2026-02-27,Statement 1,3.8,Commercial Real Estate,2,False,3,Statement 1,2025-03-21,523264.418947
+2026-02-27,Statement 1,3.8,Commercial Real Estate,2,False,3,Statement 1,2026-01-31,597880.218455
+2026-02-27,Statement 1,3.9,Non-Banking Financial Companies (NBFCs),2,False,3,Statement 1,2024-01-26,1495417.5768539999
+2026-02-27,Statement 1,3.9,Non-Banking Financial Companies (NBFCs),2,False,3,Statement 1,2024-03-22,1523054.468859
+2026-02-27,Statement 1,3.9,Non-Banking Financial Companies (NBFCs),2,False,3,Statement 1,2025-01-24,1617897.767662
+2026-02-27,Statement 1,3.9,Non-Banking Financial Companies (NBFCs),2,False,3,Statement 1,2025-03-21,1635102.1619060002
+2026-02-27,Statement 1,3.9,Non-Banking Financial Companies (NBFCs),2,False,3,Statement 1,2026-01-31,1905206.7822989998
+2026-02-27,Statement 1,3.9.1,Housing Finance Companies (HFCs),3,False,3.9,Statement 1,2024-01-26,334241.435015
+2026-02-27,Statement 1,3.9.1,Housing Finance Companies (HFCs),3,False,3.9,Statement 1,2024-03-22,321364.514275
+2026-02-27,Statement 1,3.9.1,Housing Finance Companies (HFCs),3,False,3.9,Statement 1,2025-01-24,325681.86
+2026-02-27,Statement 1,3.9.1,Housing Finance Companies (HFCs),3,False,3.9,Statement 1,2025-03-21,323181.87
+2026-02-27,Statement 1,3.9.1,Housing Finance Companies (HFCs),3,False,3.9,Statement 1,2026-01-31,353406.39
+2026-02-27,Statement 1,3.9.2,Public Financial Institutions (PFIs),3,False,3.9,Statement 1,2024-01-26,204974.367036
+2026-02-27,Statement 1,3.9.2,Public Financial Institutions (PFIs),3,False,3.9,Statement 1,2024-03-22,212796.53246
+2026-02-27,Statement 1,3.9.2,Public Financial Institutions (PFIs),3,False,3.9,Statement 1,2025-01-24,219865.522192
+2026-02-27,Statement 1,3.9.2,Public Financial Institutions (PFIs),3,False,3.9,Statement 1,2025-03-21,228678.443837
+2026-02-27,Statement 1,3.9.2,Public Financial Institutions (PFIs),3,False,3.9,Statement 1,2026-01-31,305669.872459
+2026-02-27,Statement 1,4,Personal Loans,1,False,III,Statement 1,2024-01-26,5229492.695412
+2026-02-27,Statement 1,4,Personal Loans,1,False,III,Statement 1,2024-03-22,5346691.220911
+2026-02-27,Statement 1,4,Personal Loans,1,False,III,Statement 1,2025-01-24,5849356.318726
+2026-02-27,Statement 1,4,Personal Loans,1,False,III,Statement 1,2025-03-21,5971696.129846
+2026-02-27,Statement 1,4,Personal Loans,1,False,III,Statement 1,2026-01-31,6723042.124724
+2026-02-27,Statement 1,4.1,Consumer Durables,2,False,4,Statement 1,2024-01-26,23869.159414
+2026-02-27,Statement 1,4.1,Consumer Durables,2,False,4,Statement 1,2024-03-22,23444.837766
+2026-02-27,Statement 1,4.1,Consumer Durables,2,False,4,Statement 1,2025-01-24,23299.895966
+2026-02-27,Statement 1,4.1,Consumer Durables,2,False,4,Statement 1,2025-03-21,23200.658602
+2026-02-27,Statement 1,4.1,Consumer Durables,2,False,4,Statement 1,2026-01-31,22359.641494
+2026-02-27,Statement 1,4.2,Housing (Including Priority Sector Housing),2,False,4,Statement 1,2024-01-26,2658081.562397
+2026-02-27,Statement 1,4.2,Housing (Including Priority Sector Housing),2,False,4,Statement 1,2024-03-22,2718712.395268
+2026-02-27,Statement 1,4.2,Housing (Including Priority Sector Housing),2,False,4,Statement 1,2025-01-24,2950973.722526
+2026-02-27,Statement 1,4.2,Housing (Including Priority Sector Housing),2,False,4,Statement 1,2025-03-21,3010476.605355
+2026-02-27,Statement 1,4.2,Housing (Including Priority Sector Housing),2,False,4,Statement 1,2026-01-31,3278420.304948
+2026-02-27,Statement 1,4.3,"Advances against Fixed Deposits (Including FCNR (B), NRNR Deposits etc.)",2,False,4,Statement 1,2024-01-26,116546.692276
+2026-02-27,Statement 1,4.3,"Advances against Fixed Deposits (Including FCNR (B), NRNR Deposits etc.)",2,False,4,Statement 1,2024-03-22,125082.24251
+2026-02-27,Statement 1,4.3,"Advances against Fixed Deposits (Including FCNR (B), NRNR Deposits etc.)",2,False,4,Statement 1,2025-01-24,136461.295664
+2026-02-27,Statement 1,4.3,"Advances against Fixed Deposits (Including FCNR (B), NRNR Deposits etc.)",2,False,4,Statement 1,2025-03-21,141842.08336
+2026-02-27,Statement 1,4.3,"Advances against Fixed Deposits (Including FCNR (B), NRNR Deposits etc.)",2,False,4,Statement 1,2026-01-31,154359.968207
+2026-02-27,Statement 1,4.4,"Advances to Individuals against share, bonds, etc.",2,False,4,Statement 1,2024-01-26,7340.133668
+2026-02-27,Statement 1,4.4,"Advances to Individuals against share, bonds, etc.",2,False,4,Statement 1,2024-03-22,8492.355003
+2026-02-27,Statement 1,4.4,"Advances to Individuals against share, bonds, etc.",2,False,4,Statement 1,2025-01-24,9765.771392
+2026-02-27,Statement 1,4.4,"Advances to Individuals against share, bonds, etc.",2,False,4,Statement 1,2025-03-21,10079.513133
+2026-02-27,Statement 1,4.4,"Advances to Individuals against share, bonds, etc.",2,False,4,Statement 1,2026-01-31,10263.564514
+2026-02-27,Statement 1,4.5,Credit Card Outstanding,2,False,4,Statement 1,2024-01-26,258503.29871
+2026-02-27,Statement 1,4.5,Credit Card Outstanding,2,False,4,Statement 1,2024-03-22,257016.060676
+2026-02-27,Statement 1,4.5,Credit Card Outstanding,2,False,4,Statement 1,2025-01-24,292083.480649
+2026-02-27,Statement 1,4.5,Credit Card Outstanding,2,False,4,Statement 1,2025-03-21,284366.260475
+2026-02-27,Statement 1,4.5,Credit Card Outstanding,2,False,4,Statement 1,2026-01-31,296417.211618
+2026-02-27,Statement 1,4.6,Education,2,False,4,Statement 1,2024-01-26,117186.010441
+2026-02-27,Statement 1,4.6,Education,2,False,4,Statement 1,2024-03-22,119379.603656
+2026-02-27,Statement 1,4.6,Education,2,False,4,Statement 1,2025-01-24,135864.67557
+2026-02-27,Statement 1,4.6,Education,2,False,4,Statement 1,2025-03-21,137456.056824
+2026-02-27,Statement 1,4.6,Education,2,False,4,Statement 1,2026-01-31,154899.320815
+2026-02-27,Statement 1,4.7,Vehicle Loans,2,False,4,Statement 1,2024-01-26,560961.594102
+2026-02-27,Statement 1,4.7,Vehicle Loans,2,False,4,Statement 1,2024-03-22,573390.822871
+2026-02-27,Statement 1,4.7,Vehicle Loans,2,False,4,Statement 1,2025-01-24,615234.996383
+2026-02-27,Statement 1,4.7,Vehicle Loans,2,False,4,Statement 1,2025-03-21,622793.449718
+2026-02-27,Statement 1,4.7,Vehicle Loans,2,False,4,Statement 1,2026-01-31,720567.284783
+2026-02-27,Statement 1,4.8,Loans against gold jewellery,2,False,4,Statement 1,2024-01-26,91458.092834
+2026-02-27,Statement 1,4.8,Loans against gold jewellery,2,False,4,Statement 1,2024-03-22,93301.371708
+2026-02-27,Statement 1,4.8,Loans against gold jewellery,2,False,4,Statement 1,2025-01-24,175086.235752
+2026-02-27,Statement 1,4.8,Loans against gold jewellery,2,False,4,Statement 1,2025-03-21,206284.024542
+2026-02-27,Statement 1,4.8,Loans against gold jewellery,2,False,4,Statement 1,2026-01-31,400517.195347
+2026-02-27,Statement 1,4.9,Other Personal Loans,2,False,4,Statement 1,2024-01-26,1395546.15157
+2026-02-27,Statement 1,4.9,Other Personal Loans,2,False,4,Statement 1,2024-03-22,1427871.531455
+2026-02-27,Statement 1,4.9,Other Personal Loans,2,False,4,Statement 1,2025-01-24,1510586.244825
+2026-02-27,Statement 1,4.9,Other Personal Loans,2,False,4,Statement 1,2025-03-21,1535197.477836
+2026-02-27,Statement 1,4.9,Other Personal Loans,2,False,4,Statement 1,2026-01-31,1685237.632997
+2026-02-27,Statement 1,I,Bank Credit (II + III),0,False,,,2024-01-26,16043591.79785
+2026-02-27,Statement 1,I,Bank Credit (II + III),0,False,,,2024-03-22,16432163.926709997
+2026-02-27,Statement 1,I,Bank Credit (II + III),0,False,,,2025-01-24,17868478.530021753
+2026-02-27,Statement 1,I,Bank Credit (II + III),0,False,,,2025-03-21,18243972.334670212
+2026-02-27,Statement 1,I,Bank Credit (II + III),0,False,,,2026-01-31,20475381.95524439
+2026-02-27,Statement 1,II,Food Credit,0,False,,,2024-01-26,45618.73
+2026-02-27,Statement 1,II,Food Credit,0,False,,,2024-03-22,23080.81
+2026-02-27,Statement 1,II,Food Credit,0,False,,,2025-01-24,56178.86
+2026-02-27,Statement 1,II,Food Credit,0,False,,,2025-03-21,36531.16
+2026-02-27,Statement 1,II,Food Credit,0,False,,,2026-01-31,89295.4
+2026-02-27,Statement 1,III,Non-food Credit,0,False,,,2024-01-26,15997973.06785
+2026-02-27,Statement 1,III,Non-food Credit,0,False,,,2024-03-22,16409083.116709996
+2026-02-27,Statement 1,III,Non-food Credit,0,False,,,2025-01-24,17812299.670021754
+2026-02-27,Statement 1,III,Non-food Credit,0,False,,,2025-03-21,18207441.174670212
+2026-02-27,Statement 1,III,Non-food Credit,0,False,,,2026-01-31,20386086.55524439
+2026-02-27,Statement 1,i,Agriculture and Allied Activities,2,True,,,2024-01-26,2008221.861126
+2026-02-27,Statement 1,i,Agriculture and Allied Activities,2,True,,,2024-03-22,2061125.592131
+2026-02-27,Statement 1,i,Agriculture and Allied Activities,2,True,,,2025-01-24,2248829.057853
+2026-02-27,Statement 1,i,Agriculture and Allied Activities,2,True,,,2025-03-21,2287794.295478
+2026-02-27,Statement 1,i,Agriculture and Allied Activities,2,True,,,2026-01-31,2565249.745375
+2026-02-27,Statement 1,ii,Micro and Small Enterprises,2,True,,,2024-01-26,1939652.614843
+2026-02-27,Statement 1,ii,Micro and Small Enterprises,2,True,,,2024-03-22,1974181.592811
+2026-02-27,Statement 1,ii,Micro and Small Enterprises,2,True,,,2025-01-24,2191765.631903
+2026-02-27,Statement 1,ii,Micro and Small Enterprises,2,True,,,2025-03-21,2239408.718898
+2026-02-27,Statement 1,ii,Micro and Small Enterprises,2,True,,,2026-01-31,2735314.276135
+2026-02-27,Statement 1,iii,Medium Enterprises,2,True,,,2024-01-26,470609.083033
+2026-02-27,Statement 1,iii,Medium Enterprises,2,True,,,2024-03-22,490692.832477
+2026-02-27,Statement 1,iii,Medium Enterprises,2,True,,,2025-01-24,574228.296943
+2026-02-27,Statement 1,iii,Medium Enterprises,2,True,,,2025-03-21,601450.822701
+2026-02-27,Statement 1,iii,Medium Enterprises,2,True,,,2026-01-31,682981.134683
+2026-02-27,Statement 1,iv,Housing,2,True,,,2024-01-26,757001.334045
+2026-02-27,Statement 1,iv,Housing,2,True,,,2024-03-22,755222.25644
+2026-02-27,Statement 1,iv,Housing,2,True,,,2025-01-24,747261.250811
+2026-02-27,Statement 1,iv,Housing,2,True,,,2025-03-21,746651.293154
+2026-02-27,Statement 1,iv,Housing,2,True,,,2026-01-31,1030805.285492
+2026-02-27,Statement 1,ix,Others,2,True,,,2024-01-26,64185.31376
+2026-02-27,Statement 1,ix,Others,2,True,,,2024-03-22,61339.167429
+2026-02-27,Statement 1,ix,Others,2,True,,,2025-01-24,53143.411114
+2026-02-27,Statement 1,ix,Others,2,True,,,2025-03-21,49552.334361
+2026-02-27,Statement 1,ix,Others,2,True,,,2026-01-31,40416.672256
+2026-02-27,Statement 1,v,Educational Loans,2,True,,,2024-01-26,61683.378536
+2026-02-27,Statement 1,v,Educational Loans,2,True,,,2024-03-22,62234.726239
+2026-02-27,Statement 1,v,Educational Loans,2,True,,,2025-01-24,63055.758325
+2026-02-27,Statement 1,v,Educational Loans,2,True,,,2025-03-21,62825.537219
+2026-02-27,Statement 1,v,Educational Loans,2,True,,,2026-01-31,77853.485163
+2026-02-27,Statement 1,vi,Renewable Energy,2,True,,,2024-01-26,5396.928623
+2026-02-27,Statement 1,vi,Renewable Energy,2,True,,,2024-03-22,5790.134324
+2026-02-27,Statement 1,vi,Renewable Energy,2,True,,,2025-01-24,7558.59
+2026-02-27,Statement 1,vi,Renewable Energy,2,True,,,2025-03-21,10324.84
+2026-02-27,Statement 1,vi,Renewable Energy,2,True,,,2026-01-31,12243.33
+2026-02-27,Statement 1,vii,Social Infrastructure,2,True,,,2024-01-26,829.755805
+2026-02-27,Statement 1,vii,Social Infrastructure,2,True,,,2024-03-22,813.034724
+2026-02-27,Statement 1,vii,Social Infrastructure,2,True,,,2025-01-24,983.06
+2026-02-27,Statement 1,vii,Social Infrastructure,2,True,,,2025-03-21,1316.48
+2026-02-27,Statement 1,vii,Social Infrastructure,2,True,,,2026-01-31,1255.14
+2026-02-27,Statement 1,viii,Export Credit,2,True,,,2024-01-26,12053.264607000001
+2026-02-27,Statement 1,viii,Export Credit,2,True,,,2024-03-22,11848.864447
+2026-02-27,Statement 1,viii,Export Credit,2,True,,,2025-01-24,12881.571997000001
+2026-02-27,Statement 1,viii,Export Credit,2,True,,,2025-03-21,12478.775188000001
+2026-02-27,Statement 1,viii,Export Credit,2,True,,,2026-01-31,10662.787879000001
+2026-02-27,Statement 1,x,Weaker Sections including net PSLC- SF/MF,2,True,,,2024-01-26,1589097.062936
+2026-02-27,Statement 1,x,Weaker Sections including net PSLC- SF/MF,2,True,,,2024-03-22,1617777.593105
+2026-02-27,Statement 1,x,Weaker Sections including net PSLC- SF/MF,2,True,,,2025-01-24,1793997.235779
+2026-02-27,Statement 1,x,Weaker Sections including net PSLC- SF/MF,2,True,,,2025-03-21,1864606.180081
+2026-02-27,Statement 1,x,Weaker Sections including net PSLC- SF/MF,2,True,,,2026-01-31,2007818.807787
+2026-02-27,Statement 2,2.1,Mining and Quarrying (incl. Coal),2,False,2,Statement 1,2024-01-26,52813.440034
+2026-02-27,Statement 2,2.1,Mining and Quarrying (incl. Coal),2,False,2,Statement 1,2024-03-22,54220.184399
+2026-02-27,Statement 2,2.1,Mining and Quarrying (incl. Coal),2,False,2,Statement 1,2025-01-24,53242.200694
+2026-02-27,Statement 2,2.1,Mining and Quarrying (incl. Coal),2,False,2,Statement 1,2025-03-21,56817.556194
+2026-02-27,Statement 2,2.1,Mining and Quarrying (incl. Coal),2,False,2,Statement 1,2026-01-31,64669.351834
+2026-02-27,Statement 2,2.10,"Rubber, Plastic and their Products",2,False,2,Statement 1,2024-01-26,89909.777338
+2026-02-27,Statement 2,2.10,"Rubber, Plastic and their Products",2,False,2,Statement 1,2024-03-22,90471.783405
+2026-02-27,Statement 2,2.10,"Rubber, Plastic and their Products",2,False,2,Statement 1,2025-01-24,100175.937909
+2026-02-27,Statement 2,2.10,"Rubber, Plastic and their Products",2,False,2,Statement 1,2025-03-21,103464.613501
+2026-02-27,Statement 2,2.10,"Rubber, Plastic and their Products",2,False,2,Statement 1,2026-01-31,110155.84059
+2026-02-27,Statement 2,2.11,Glass and Glassware,2,False,2,Statement 1,2024-01-26,11732.344266
+2026-02-27,Statement 2,2.11,Glass and Glassware,2,False,2,Statement 1,2024-03-22,12090.217792
+2026-02-27,Statement 2,2.11,Glass and Glassware,2,False,2,Statement 1,2025-01-24,12610.40886
+2026-02-27,Statement 2,2.11,Glass and Glassware,2,False,2,Statement 1,2025-03-21,13442.791875
+2026-02-27,Statement 2,2.11,Glass and Glassware,2,False,2,Statement 1,2026-01-31,13826.486687
+2026-02-27,Statement 2,2.12,Cement and Cement Products,2,False,2,Statement 1,2024-01-26,59192.616085
+2026-02-27,Statement 2,2.12,Cement and Cement Products,2,False,2,Statement 1,2024-03-22,59756.90776
+2026-02-27,Statement 2,2.12,Cement and Cement Products,2,False,2,Statement 1,2025-01-24,60576.350899
+2026-02-27,Statement 2,2.12,Cement and Cement Products,2,False,2,Statement 1,2025-03-21,59752.607309
+2026-02-27,Statement 2,2.12,Cement and Cement Products,2,False,2,Statement 1,2026-01-31,64548.566153
+2026-02-27,Statement 2,2.13,Basic Metal and Metal Product,2,False,2,Statement 1,2024-01-26,380536.272237
+2026-02-27,Statement 2,2.13,Basic Metal and Metal Product,2,False,2,Statement 1,2024-03-22,384447.229472
+2026-02-27,Statement 2,2.13,Basic Metal and Metal Product,2,False,2,Statement 1,2025-01-24,434354.303158
+2026-02-27,Statement 2,2.13,Basic Metal and Metal Product,2,False,2,Statement 1,2025-03-21,433501.154395
+2026-02-27,Statement 2,2.13,Basic Metal and Metal Product,2,False,2,Statement 1,2026-01-31,494119.017771
+2026-02-27,Statement 2,2.13.1,Iron and Steel,3,False,2.13,Statement 2,2024-01-26,269706.620931
+2026-02-27,Statement 2,2.13.1,Iron and Steel,3,False,2.13,Statement 2,2024-03-22,273802.563886
+2026-02-27,Statement 2,2.13.1,Iron and Steel,3,False,2.13,Statement 2,2025-01-24,308144.839687
+2026-02-27,Statement 2,2.13.1,Iron and Steel,3,False,2.13,Statement 2,2025-03-21,300156.039772
+2026-02-27,Statement 2,2.13.1,Iron and Steel,3,False,2.13,Statement 2,2026-01-31,333268.398282
+2026-02-27,Statement 2,2.13.2,Other Metal and Metal Product,3,False,2.13,Statement 2,2024-01-26,110829.651306
+2026-02-27,Statement 2,2.13.2,Other Metal and Metal Product,3,False,2.13,Statement 2,2024-03-22,110644.665587
+2026-02-27,Statement 2,2.13.2,Other Metal and Metal Product,3,False,2.13,Statement 2,2025-01-24,126209.463472
+2026-02-27,Statement 2,2.13.2,Other Metal and Metal Product,3,False,2.13,Statement 2,2025-03-21,133345.114622
+2026-02-27,Statement 2,2.13.2,Other Metal and Metal Product,3,False,2.13,Statement 2,2026-01-31,160850.619488
+2026-02-27,Statement 2,2.14,All Engineering,2,False,2,Statement 1,2024-01-26,194249.257913
+2026-02-27,Statement 2,2.14,All Engineering,2,False,2,Statement 1,2024-03-22,196864.053638
+2026-02-27,Statement 2,2.14,All Engineering,2,False,2,Statement 1,2025-01-24,229143.368168
+2026-02-27,Statement 2,2.14,All Engineering,2,False,2,Statement 1,2025-03-21,240135.894273
+2026-02-27,Statement 2,2.14,All Engineering,2,False,2,Statement 1,2026-01-31,311363.243208
+2026-02-27,Statement 2,2.14.1,Electronics,3,False,2.14,Statement 2,2024-01-26,44653.275364
+2026-02-27,Statement 2,2.14.1,Electronics,3,False,2.14,Statement 2,2024-03-22,43395.914093
+2026-02-27,Statement 2,2.14.1,Electronics,3,False,2.14,Statement 2,2025-01-24,51244.424535
+2026-02-27,Statement 2,2.14.1,Electronics,3,False,2.14,Statement 2,2025-03-21,52863.096541
+2026-02-27,Statement 2,2.14.1,Electronics,3,False,2.14,Statement 2,2026-01-31,64380.15052
+2026-02-27,Statement 2,2.14.2,Others,3,False,2.14,Statement 2,2024-01-26,149595.982549
+2026-02-27,Statement 2,2.14.2,Others,3,False,2.14,Statement 2,2024-03-22,153468.139546
+2026-02-27,Statement 2,2.14.2,Others,3,False,2.14,Statement 2,2025-01-24,177898.943634
+2026-02-27,Statement 2,2.14.2,Others,3,False,2.14,Statement 2,2025-03-21,187272.797732
+2026-02-27,Statement 2,2.14.2,Others,3,False,2.14,Statement 2,2026-01-31,246983.092688
+2026-02-27,Statement 2,2.15,"Vehicles, Vehicle Parts and Transport Equipment",2,False,2,Statement 1,2024-01-26,109390.672239
+2026-02-27,Statement 2,2.15,"Vehicles, Vehicle Parts and Transport Equipment",2,False,2,Statement 1,2024-03-22,113547.869646
+2026-02-27,Statement 2,2.15,"Vehicles, Vehicle Parts and Transport Equipment",2,False,2,Statement 1,2025-01-24,118077.468964
+2026-02-27,Statement 2,2.15,"Vehicles, Vehicle Parts and Transport Equipment",2,False,2,Statement 1,2025-03-21,119450.200207
+2026-02-27,Statement 2,2.15,"Vehicles, Vehicle Parts and Transport Equipment",2,False,2,Statement 1,2026-01-31,135521.789341
+2026-02-27,Statement 2,2.16,Gems and Jewellery,2,False,2,Statement 1,2024-01-26,82234.222009
+2026-02-27,Statement 2,2.16,Gems and Jewellery,2,False,2,Statement 1,2024-03-22,84957.198645
+2026-02-27,Statement 2,2.16,Gems and Jewellery,2,False,2,Statement 1,2025-01-24,86443.407137
+2026-02-27,Statement 2,2.16,Gems and Jewellery,2,False,2,Statement 1,2025-03-21,85813.54569
+2026-02-27,Statement 2,2.16,Gems and Jewellery,2,False,2,Statement 1,2026-01-31,117215.320149
+2026-02-27,Statement 2,2.17,Construction,2,False,2,Statement 1,2024-01-26,142669.120157
+2026-02-27,Statement 2,2.17,Construction,2,False,2,Statement 1,2024-03-22,142209.854361
+2026-02-27,Statement 2,2.17,Construction,2,False,2,Statement 1,2025-01-24,154070.6003
+2026-02-27,Statement 2,2.17,Construction,2,False,2,Statement 1,2025-03-21,160037.036601
+2026-02-27,Statement 2,2.17,Construction,2,False,2,Statement 1,2026-01-31,167086.223396
+2026-02-27,Statement 2,2.18,Infrastructure,2,False,2,Statement 1,2024-01-26,1310664.956783
+2026-02-27,Statement 2,2.18,Infrastructure,2,False,2,Statement 1,2024-03-22,1326851.766547
+2026-02-27,Statement 2,2.18,Infrastructure,2,False,2,Statement 1,2025-01-24,1340944.288802
+2026-02-27,Statement 2,2.18,Infrastructure,2,False,2,Statement 1,2025-03-21,1364368.718422
+2026-02-27,Statement 2,2.18,Infrastructure,2,False,2,Statement 1,2026-01-31,1426795.971405
+2026-02-27,Statement 2,2.18.1,Power,3,False,2.18,Statement 2,2024-01-26,642265.544697
+2026-02-27,Statement 2,2.18.1,Power,3,False,2.18,Statement 2,2024-03-22,651191.248248
+2026-02-27,Statement 2,2.18.1,Power,3,False,2.18,Statement 2,2025-01-24,671688.740078
+2026-02-27,Statement 2,2.18.1,Power,3,False,2.18,Statement 2,2025-03-21,692159.941731
+2026-02-27,Statement 2,2.18.1,Power,3,False,2.18,Statement 2,2026-01-31,789192.782564
+2026-02-27,Statement 2,2.18.2,Telecommunications,3,False,2.18,Statement 2,2024-01-26,141862.076508
+2026-02-27,Statement 2,2.18.2,Telecommunications,3,False,2.18,Statement 2,2024-03-22,143097.509709
+2026-02-27,Statement 2,2.18.2,Telecommunications,3,False,2.18,Statement 2,2025-01-24,127902.751133
+2026-02-27,Statement 2,2.18.2,Telecommunications,3,False,2.18,Statement 2,2025-03-21,123849.801843
+2026-02-27,Statement 2,2.18.2,Telecommunications,3,False,2.18,Statement 2,2026-01-31,105860.485016
+2026-02-27,Statement 2,2.18.3,Roads,3,False,2.18,Statement 2,2024-01-26,323574.00018
+2026-02-27,Statement 2,2.18.3,Roads,3,False,2.18,Statement 2,2024-03-22,324255.726605
+2026-02-27,Statement 2,2.18.3,Roads,3,False,2.18,Statement 2,2025-01-24,330935.948811
+2026-02-27,Statement 2,2.18.3,Roads,3,False,2.18,Statement 2,2025-03-21,334146.511227
+2026-02-27,Statement 2,2.18.3,Roads,3,False,2.18,Statement 2,2026-01-31,331484.676834
+2026-02-27,Statement 2,2.18.4,Airports,3,False,2.18,Statement 2,2024-01-26,6887.787124
+2026-02-27,Statement 2,2.18.4,Airports,3,False,2.18,Statement 2,2024-03-22,7280.23
+2026-02-27,Statement 2,2.18.4,Airports,3,False,2.18,Statement 2,2025-01-24,8681.79
+2026-02-27,Statement 2,2.18.4,Airports,3,False,2.18,Statement 2,2025-03-21,9155.73
+2026-02-27,Statement 2,2.18.4,Airports,3,False,2.18,Statement 2,2026-01-31,6419.16
+2026-02-27,Statement 2,2.18.5,Ports,3,False,2.18,Statement 2,2024-01-26,7170.995508
+2026-02-27,Statement 2,2.18.5,Ports,3,False,2.18,Statement 2,2024-03-22,6680.97
+2026-02-27,Statement 2,2.18.5,Ports,3,False,2.18,Statement 2,2025-01-24,5464.52
+2026-02-27,Statement 2,2.18.5,Ports,3,False,2.18,Statement 2,2025-03-21,5915.78
+2026-02-27,Statement 2,2.18.5,Ports,3,False,2.18,Statement 2,2026-01-31,8156.1
+2026-02-27,Statement 2,2.18.6,Railways (other than Indian Railways),3,False,2.18,Statement 2,2024-01-26,11986.173207
+2026-02-27,Statement 2,2.18.6,Railways (other than Indian Railways),3,False,2.18,Statement 2,2024-03-22,12961.351059
+2026-02-27,Statement 2,2.18.6,Railways (other than Indian Railways),3,False,2.18,Statement 2,2025-01-24,13148.362213
+2026-02-27,Statement 2,2.18.6,Railways (other than Indian Railways),3,False,2.18,Statement 2,2025-03-21,13414.976677
+2026-02-27,Statement 2,2.18.6,Railways (other than Indian Railways),3,False,2.18,Statement 2,2026-01-31,9963.764774
+2026-02-27,Statement 2,2.18.7,Other Infrastructure,3,False,2.18,Statement 2,2024-01-26,176918.37956
+2026-02-27,Statement 2,2.18.7,Other Infrastructure,3,False,2.18,Statement 2,2024-03-22,181384.730927
+2026-02-27,Statement 2,2.18.7,Other Infrastructure,3,False,2.18,Statement 2,2025-01-24,183122.176567
+2026-02-27,Statement 2,2.18.7,Other Infrastructure,3,False,2.18,Statement 2,2025-03-21,185725.976945
+2026-02-27,Statement 2,2.18.7,Other Infrastructure,3,False,2.18,Statement 2,2026-01-31,175719.002219
+2026-02-27,Statement 2,2.19,Other Industries,2,False,2,Statement 1,2024-01-26,249850.930416
+2026-02-27,Statement 2,2.19,Other Industries,2,False,2,Statement 1,2024-03-22,256370.638667
+2026-02-27,Statement 2,2.19,Other Industries,2,False,2,Statement 1,2025-01-24,297546.986762
+2026-02-27,Statement 2,2.19,Other Industries,2,False,2,Statement 1,2025-03-21,300921.291372
+2026-02-27,Statement 2,2.19,Other Industries,2,False,2,Statement 1,2026-01-31,328026.54135
+2026-02-27,Statement 2,2.2,Food Processing,2,False,2,Statement 1,2024-01-26,195761.803428
+2026-02-27,Statement 2,2.2,Food Processing,2,False,2,Statement 1,2024-03-22,208862.771555
+2026-02-27,Statement 2,2.2,Food Processing,2,False,2,Statement 1,2025-01-24,217361.174876
+2026-02-27,Statement 2,2.2,Food Processing,2,False,2,Statement 1,2025-03-21,219524.798106
+2026-02-27,Statement 2,2.2,Food Processing,2,False,2,Statement 1,2026-01-31,238126.44842
+2026-02-27,Statement 2,2.2.1,Sugar,3,False,2.2,Statement 2,2024-01-26,19920.468176
+2026-02-27,Statement 2,2.2.1,Sugar,3,False,2.2,Statement 2,2024-03-22,26383.011251
+2026-02-27,Statement 2,2.2.1,Sugar,3,False,2.2,Statement 2,2025-01-24,23146.467795
+2026-02-27,Statement 2,2.2.1,Sugar,3,False,2.2,Statement 2,2025-03-21,28521.702093
+2026-02-27,Statement 2,2.2.1,Sugar,3,False,2.2,Statement 2,2026-01-31,24554.266811
+2026-02-27,Statement 2,2.2.2,Edible Oils and Vanaspati,3,False,2.2,Statement 2,2024-01-26,19801.758828
+2026-02-27,Statement 2,2.2.2,Edible Oils and Vanaspati,3,False,2.2,Statement 2,2024-03-22,19700.216132
+2026-02-27,Statement 2,2.2.2,Edible Oils and Vanaspati,3,False,2.2,Statement 2,2025-01-24,21313.701212
+2026-02-27,Statement 2,2.2.2,Edible Oils and Vanaspati,3,False,2.2,Statement 2,2025-03-21,20927.253641
+2026-02-27,Statement 2,2.2.2,Edible Oils and Vanaspati,3,False,2.2,Statement 2,2026-01-31,23812.399156
+2026-02-27,Statement 2,2.2.3,Tea,3,False,2.2,Statement 2,2024-01-26,5966.977264
+2026-02-27,Statement 2,2.2.3,Tea,3,False,2.2,Statement 2,2024-03-22,5691.947888
+2026-02-27,Statement 2,2.2.3,Tea,3,False,2.2,Statement 2,2025-01-24,6116.041244
+2026-02-27,Statement 2,2.2.3,Tea,3,False,2.2,Statement 2,2025-03-21,5083.83262
+2026-02-27,Statement 2,2.2.3,Tea,3,False,2.2,Statement 2,2026-01-31,5076.90388
+2026-02-27,Statement 2,2.2.4,Others,3,False,2.2,Statement 2,2024-01-26,150072.59916
+2026-02-27,Statement 2,2.2.4,Others,3,False,2.2,Statement 2,2024-03-22,157087.596283
+2026-02-27,Statement 2,2.2.4,Others,3,False,2.2,Statement 2,2025-01-24,166784.964626
+2026-02-27,Statement 2,2.2.4,Others,3,False,2.2,Statement 2,2025-03-21,164992.009752
+2026-02-27,Statement 2,2.2.4,Others,3,False,2.2,Statement 2,2026-01-31,184682.878573
+2026-02-27,Statement 2,2.3,Beverage and Tobacco,2,False,2,Statement 1,2024-01-26,28625.410162
+2026-02-27,Statement 2,2.3,Beverage and Tobacco,2,False,2,Statement 1,2024-03-22,31137.471103
+2026-02-27,Statement 2,2.3,Beverage and Tobacco,2,False,2,Statement 1,2025-01-24,30469.511933
+2026-02-27,Statement 2,2.3,Beverage and Tobacco,2,False,2,Statement 1,2025-03-21,35515.454614
+2026-02-27,Statement 2,2.3,Beverage and Tobacco,2,False,2,Statement 1,2026-01-31,37883.952084
+2026-02-27,Statement 2,2.4,Textiles,2,False,2,Statement 1,2024-01-26,252976.04545
+2026-02-27,Statement 2,2.4,Textiles,2,False,2,Statement 1,2024-03-22,256047.983577
+2026-02-27,Statement 2,2.4,Textiles,2,False,2,Statement 1,2025-01-24,267676.176248
+2026-02-27,Statement 2,2.4,Textiles,2,False,2,Statement 1,2025-03-21,277267.085246
+2026-02-27,Statement 2,2.4,Textiles,2,False,2,Statement 1,2026-01-31,294364.506091
+2026-02-27,Statement 2,2.4.1,Cotton Textiles,3,False,2.4,Statement 2,2024-01-26,97148.047631
+2026-02-27,Statement 2,2.4.1,Cotton Textiles,3,False,2.4,Statement 2,2024-03-22,99513.087082
+2026-02-27,Statement 2,2.4.1,Cotton Textiles,3,False,2.4,Statement 2,2025-01-24,101533.071827
+2026-02-27,Statement 2,2.4.1,Cotton Textiles,3,False,2.4,Statement 2,2025-03-21,107494.595816
+2026-02-27,Statement 2,2.4.1,Cotton Textiles,3,False,2.4,Statement 2,2026-01-31,107781.985767
+2026-02-27,Statement 2,2.4.2,Jute Textiles,3,False,2.4,Statement 2,2024-01-26,4233.159821
+2026-02-27,Statement 2,2.4.2,Jute Textiles,3,False,2.4,Statement 2,2024-03-22,4279.559436
+2026-02-27,Statement 2,2.4.2,Jute Textiles,3,False,2.4,Statement 2,2025-01-24,4327.66976
+2026-02-27,Statement 2,2.4.2,Jute Textiles,3,False,2.4,Statement 2,2025-03-21,4288.234703
+2026-02-27,Statement 2,2.4.2,Jute Textiles,3,False,2.4,Statement 2,2026-01-31,4898.992147
+2026-02-27,Statement 2,2.4.3,Man-Made Textiles,3,False,2.4,Statement 2,2024-01-26,45844.931437
+2026-02-27,Statement 2,2.4.3,Man-Made Textiles,3,False,2.4,Statement 2,2024-03-22,45074.468407
+2026-02-27,Statement 2,2.4.3,Man-Made Textiles,3,False,2.4,Statement 2,2025-01-24,49425.110021
+2026-02-27,Statement 2,2.4.3,Man-Made Textiles,3,False,2.4,Statement 2,2025-03-21,49186.259419
+2026-02-27,Statement 2,2.4.3,Man-Made Textiles,3,False,2.4,Statement 2,2026-01-31,51493.404113
+2026-02-27,Statement 2,2.4.4,Other Textiles,3,False,2.4,Statement 2,2024-01-26,105749.906561
+2026-02-27,Statement 2,2.4.4,Other Textiles,3,False,2.4,Statement 2,2024-03-22,107180.868652
+2026-02-27,Statement 2,2.4.4,Other Textiles,3,False,2.4,Statement 2,2025-01-24,112390.324641
+2026-02-27,Statement 2,2.4.4,Other Textiles,3,False,2.4,Statement 2,2025-03-21,116297.995308
+2026-02-27,Statement 2,2.4.4,Other Textiles,3,False,2.4,Statement 2,2026-01-31,130190.124063
+2026-02-27,Statement 2,2.5,Leather and Leather Products,2,False,2,Statement 1,2024-01-26,12134.488974
+2026-02-27,Statement 2,2.5,Leather and Leather Products,2,False,2,Statement 1,2024-03-22,12587.81048
+2026-02-27,Statement 2,2.5,Leather and Leather Products,2,False,2,Statement 1,2025-01-24,12711.547336
+2026-02-27,Statement 2,2.5,Leather and Leather Products,2,False,2,Statement 1,2025-03-21,12979.843088
+2026-02-27,Statement 2,2.5,Leather and Leather Products,2,False,2,Statement 1,2026-01-31,13791.905534
+2026-02-27,Statement 2,2.6,Wood and Wood Products,2,False,2,Statement 1,2024-01-26,23748.11129
+2026-02-27,Statement 2,2.6,Wood and Wood Products,2,False,2,Statement 1,2024-03-22,23838.814976
+2026-02-27,Statement 2,2.6,Wood and Wood Products,2,False,2,Statement 1,2025-01-24,26894.668503
+2026-02-27,Statement 2,2.6,Wood and Wood Products,2,False,2,Statement 1,2025-03-21,27825.967375
+2026-02-27,Statement 2,2.6,Wood and Wood Products,2,False,2,Statement 1,2026-01-31,30571.268696
+2026-02-27,Statement 2,2.7,Paper and Paper Products,2,False,2,Statement 1,2024-01-26,45875.097263
+2026-02-27,Statement 2,2.7,Paper and Paper Products,2,False,2,Statement 1,2024-03-22,46426.057126
+2026-02-27,Statement 2,2.7,Paper and Paper Products,2,False,2,Statement 1,2025-01-24,51884.567705
+2026-02-27,Statement 2,2.7,Paper and Paper Products,2,False,2,Statement 1,2025-03-21,52847.593915
+2026-02-27,Statement 2,2.7,Paper and Paper Products,2,False,2,Statement 1,2026-01-31,58103.903057
+2026-02-27,Statement 2,2.8,"Petroleum, Coal Products and Nuclear Fuels",2,False,2,Statement 1,2024-01-26,129735.253465
+2026-02-27,Statement 2,2.8,"Petroleum, Coal Products and Nuclear Fuels",2,False,2,Statement 1,2024-03-22,132356.302438
+2026-02-27,Statement 2,2.8,"Petroleum, Coal Products and Nuclear Fuels",2,False,2,Statement 1,2025-01-24,154401.668072
+2026-02-27,Statement 2,2.8,"Petroleum, Coal Products and Nuclear Fuels",2,False,2,Statement 1,2025-03-21,154178.5291
+2026-02-27,Statement 2,2.8,"Petroleum, Coal Products and Nuclear Fuels",2,False,2,Statement 1,2026-01-31,176716.243694
+2026-02-27,Statement 2,2.9,Chemicals and Chemical Products,2,False,2,Statement 1,2024-01-26,242309.535025
+2026-02-27,Statement 2,2.9,Chemicals and Chemical Products,2,False,2,Statement 1,2024-03-22,249347.615963
+2026-02-27,Statement 2,2.9,Chemicals and Chemical Products,2,False,2,Statement 1,2025-01-24,265384.23715
+2026-02-27,Statement 2,2.9,Chemicals and Chemical Products,2,False,2,Statement 1,2025-03-21,267814.870041
+2026-02-27,Statement 2,2.9,Chemicals and Chemical Products,2,False,2,Statement 1,2026-01-31,305421.198099
+2026-02-27,Statement 2,2.9.1,Fertiliser,3,False,2.9,Statement 2,2024-01-26,33976.594011
+2026-02-27,Statement 2,2.9.1,Fertiliser,3,False,2.9,Statement 2,2024-03-22,37569.368771
+2026-02-27,Statement 2,2.9.1,Fertiliser,3,False,2.9,Statement 2,2025-01-24,31243.797284
+2026-02-27,Statement 2,2.9.1,Fertiliser,3,False,2.9,Statement 2,2025-03-21,32011.209754
+2026-02-27,Statement 2,2.9.1,Fertiliser,3,False,2.9,Statement 2,2026-01-31,34975.963458
+2026-02-27,Statement 2,2.9.2,Drugs and Pharmaceuticals,3,False,2.9,Statement 2,2024-01-26,79458.967435
+2026-02-27,Statement 2,2.9.2,Drugs and Pharmaceuticals,3,False,2.9,Statement 2,2024-03-22,80832.235579
+2026-02-27,Statement 2,2.9.2,Drugs and Pharmaceuticals,3,False,2.9,Statement 2,2025-01-24,87795.367346
+2026-02-27,Statement 2,2.9.2,Drugs and Pharmaceuticals,3,False,2.9,Statement 2,2025-03-21,88524.293888
+2026-02-27,Statement 2,2.9.2,Drugs and Pharmaceuticals,3,False,2.9,Statement 2,2026-01-31,96762.018003
+2026-02-27,Statement 2,2.9.3,Petro Chemicals,3,False,2.9,Statement 2,2024-01-26,25156.35059
+2026-02-27,Statement 2,2.9.3,Petro Chemicals,3,False,2.9,Statement 2,2024-03-22,25318.154272
+2026-02-27,Statement 2,2.9.3,Petro Chemicals,3,False,2.9,Statement 2,2025-01-24,29702.083891
+2026-02-27,Statement 2,2.9.3,Petro Chemicals,3,False,2.9,Statement 2,2025-03-21,28797.461456
+2026-02-27,Statement 2,2.9.3,Petro Chemicals,3,False,2.9,Statement 2,2026-01-31,38230.663498
+2026-02-27,Statement 2,2.9.4,Others,3,False,2.9,Statement 2,2024-01-26,103717.622989
+2026-02-27,Statement 2,2.9.4,Others,3,False,2.9,Statement 2,2024-03-22,105627.857342
+2026-02-27,Statement 2,2.9.4,Others,3,False,2.9,Statement 2,2025-01-24,116642.988627
+2026-02-27,Statement 2,2.9.4,Others,3,False,2.9,Statement 2,2025-03-21,118481.904944
+2026-02-27,Statement 2,2.9.4,Others,3,False,2.9,Statement 2,2026-01-31,135452.553139
+2026-02-27,Statement 2,,Industries (2.1 to 2.19),-1,False,,,2024-01-26,3614409.354535
+2026-02-27,Statement 2,,Industries (2.1 to 2.19),-1,False,,,2024-03-22,3682392.531552
+2026-02-27,Statement 2,,Industries (2.1 to 2.19),-1,False,,,2025-01-24,3913968.873477
+2026-02-27,Statement 2,,Industries (2.1 to 2.19),-1,False,,,2025-03-21,3985659.551324
+2026-02-27,Statement 2,,Industries (2.1 to 2.19),-1,False,,,2026-01-31,4388307.777559

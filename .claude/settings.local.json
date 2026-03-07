@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \":*)",
+      "Bash(python3 parser.py SIBC27022026.xlsx)",
+      "Bash(python3 consolidate.py)",
+      "Bash(python3 parser.py PR2019SIBC300126.xlsx)",
+      "Bash(python3 -c \"import streamlit, plotly, openpyxl, pandas; print\\(''All packages OK''\\)\")",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(pip show streamlit plotly pandas openpyxl)",
+      "Bash(python3 consolidate.py SIBC27022026.xlsx)",
+      "Bash(pip install kaleido fpdf2 pyyaml)",
+      "Bash(python3 -c \"from fpdf import FPDF; print\\(''fpdf2 ok''\\)\")",
+      "Bash(python publish.py --post 1)",
+      "Bash(pip install kaleido==0.2.1)",
+      "Bash(python publish.py)"
+    ]
+  }
+}
