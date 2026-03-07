@@ -157,6 +157,24 @@ ROMAN_ORDER = ["i","ii","iii","iv","v","vi","vii","viii","ix","x",
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
+def _html_legend(codes: list, labels: dict, cmap: dict) -> None:
+    """Flex-wrap legend rendered as HTML above the chart.
+    Takes exactly the space it needs — no Plotly top-margin estimation required."""
+    items = "".join(
+        f'<span style="display:inline-flex;align-items:center;'
+        f'margin:3px 14px 3px 0;white-space:nowrap;">'
+        f'<span style="width:12px;height:12px;border-radius:2px;flex-shrink:0;'
+        f'background:{cmap.get(code, "#888")};margin-right:5px;"></span>'
+        f'<span style="font-size:12px;color:{THEME["font"]};">'
+        f'{labels.get(code, code)}</span></span>'
+        for code in codes
+    )
+    st.markdown(
+        f'<div style="display:flex;flex-wrap:wrap;margin-bottom:4px;">{items}</div>',
+        unsafe_allow_html=True,
+    )
+
+
 def assign_colors(codes: list, labels: dict) -> dict:
     cmap, qi = {}, 0
     for code in codes:
@@ -260,18 +278,46 @@ def compute_growth(data_df: pd.DataFrame, method: str) -> pd.DataFrame:
 
 
 # ── Chart renderers ───────────────────────────────────────────────────────────
-def _base_layout(n_legend: int = 0) -> dict:
+def _base_layout(n_legend: int = 0, legend_below: bool = False) -> dict:
     """
-    Base Plotly layout with a dynamic top margin sized to the legend.
-    n_legend = number of series → calculates required rows at ~6 items/row
-    so the legend never overflows into Streamlit controls above the chart.
+    Base Plotly layout with dynamic margins for the legend.
+
+    Trend charts (legend_below=False): legend above plot area, top margin
+      sized conservatively at ~4 items/row so it never overflows into controls.
+
+    Distribution charts (legend_below=True): legend below the bars, bottom
+      margin sized instead — eliminates the blank gap caused by over-allocating
+      top margin when Plotly wraps fewer rows than the worst-case estimate.
     """
-    # ~6 items fit per row at typical widths (conservative for mobile)
-    rows = max(1, math.ceil(n_legend / 6)) if n_legend else 0
-    t_margin = 10 + rows * 26  # 26 px per legend row
+    if legend_below and n_legend:
+        # Legend below bars: no extra top margin needed.
+        # y=-0.25 clears the x-axis tick labels (~20px) before the legend starts.
+        leg_rows = max(1, math.ceil(n_legend / 5))  # wider row on full-width charts
+        t_margin = 10
+        b_margin = 40 + leg_rows * 32   # 32 px per legend row + base gap for tick labels
+        chart_height = 370
+        legend_cfg = dict(
+            orientation="h",
+            yanchor="top", y=-0.25,
+            xanchor="left", x=0,
+            bgcolor="rgba(0,0,0,0)",
+        )
+    else:
+        # Legend above plot: conservative top margin to avoid overflow
+        rows = max(1, math.ceil(n_legend / 4)) if n_legend else 0
+        t_margin = 10 + rows * 30
+        b_margin = 20
+        chart_height = 370 + max(0, rows - 1) * 20
+        legend_cfg = dict(
+            orientation="h",
+            yanchor="bottom", y=1.02,
+            xanchor="left", x=0,
+            bgcolor="rgba(0,0,0,0)",
+        ) if n_legend else None
+
     layout: dict = dict(
-        height=370,
-        margin=dict(l=0, r=0, t=t_margin, b=20),
+        height=chart_height,
+        margin=dict(l=0, r=0, t=t_margin, b=b_margin),
         hovermode="x unified",
         plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
@@ -279,14 +325,9 @@ def _base_layout(n_legend: int = 0) -> dict:
         yaxis=dict(gridcolor=THEME["grid"], zeroline=False),
         font=dict(color=THEME["font"]),
     )
-    if n_legend:
+    if legend_cfg:
         layout["showlegend"] = True
-        layout["legend"] = dict(
-            orientation="h",
-            yanchor="bottom", y=1.02,
-            xanchor="left", x=0,
-            bgcolor="rgba(0,0,0,0)",
-        )
+        layout["legend"] = legend_cfg
     else:
         layout["showlegend"] = False
     return layout
@@ -384,6 +425,9 @@ def render_dist(sec_idx: int, data: pd.DataFrame,
             key=f"dist_d_{sec_idx}",
         )
 
+    # ── Legend above chart (HTML flex-wrap; takes exact space, no blank gap) ──
+    _html_legend(_dc, labels, cmap)
+
     rows = []
     for d in all_dates:
         sl = data[data["date"] == d]
@@ -419,7 +463,7 @@ def render_dist(sec_idx: int, data: pd.DataFrame,
             hovertemplate=f"<b>{name}</b><br>%{{x}}<br>{hover_fmt}<extra></extra>",
         ))
 
-    layout = _base_layout(len(_dc))
+    layout = _base_layout()   # no Plotly legend — shown as HTML above
     layout["yaxis"] = yax
     layout.pop("yaxis_title", None)
     fig2.update_layout(**layout, barmode="stack")
