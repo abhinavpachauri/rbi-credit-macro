@@ -1,9 +1,11 @@
 """
 RBI Gross Bank Credit Dashboard
 ================================
+Single scrollable page. Two top-level tabs: Trend | Distribution.
 Run: streamlit run dashboard.py
 """
 
+import math
 import sys
 from pathlib import Path
 
@@ -15,10 +17,119 @@ import streamlit as st
 sys.path.insert(0, str(Path(__file__).parent))
 from parser import read_parsed_csv
 
-# ── Page config ───────────────────────────────────────────────────────────────
+# ── Page config ────────────────────────────────────────────────────────────────
 st.set_page_config(page_title="RBI Bank Credit", layout="wide", page_icon="🏦")
 
-# ── Named colours for well-known series ───────────────────────────────────────
+# ── Theme state (default: light / beige) ──────────────────────────────────────
+_dark = st.session_state.get("dark_mode", False)
+
+THEME = (
+    dict(                                   # ── dark ──
+        bg_page      = "#0e1117",
+        bg_card      = "#141728",
+        border_card  = "#2a2f4a",
+        shadow       = "rgba(0,0,0,0.4)",
+        grid         = "#1e2240",
+        font         = "#c8cfe8",
+        tab_border   = "#2a2f4a",
+        hline        = "#555555",
+    ) if _dark else
+    dict(                                   # ── light / beige ──
+        bg_page      = "#faf6ef",
+        bg_card      = "#fffcf5",
+        border_card  = "#e4d9c8",
+        shadow       = "rgba(120,90,40,0.08)",
+        grid         = "#e8ddd0",
+        font         = "#2c1e0f",
+        tab_border   = "#e4d9c8",
+        hline        = "#bbbbbb",
+    )
+)
+
+# Extra overrides needed when forcing dark on top of Streamlit's light base
+_dark_extra = f"""
+.stApp,
+[data-testid="stMain"],
+[data-testid="block-container"],
+[data-testid="stMainBlockContainer"] {{
+    background-color: {THEME['bg_page']} !important;
+    color: {THEME['font']} !important;
+}}
+h1, h2, h3, h4, h5, h6 {{ color: {THEME['font']} !important; }}
+p, span,
+[data-testid="stMarkdownContainer"] p,
+[data-testid="stMetricLabel"] > div,
+[data-testid="stMetricValue"] > div,
+[data-testid="stMetricDelta"],
+[data-testid="stCaptionContainer"] p,
+[data-testid="stRadio"] label,
+[data-testid="stNumberInput"] label
+{{ color: {THEME['font']} !important; }}
+hr {{ border-color: {THEME['border_card']} !important; }}
+[data-testid="stNumberInput"] input {{
+    color: {THEME['font']} !important;
+    background-color: #1e2240 !important;
+    border-color: #2a2f4a !important;
+}}
+[data-baseweb="tab"] {{ color: {THEME['font']} !important; }}
+[data-testid="stDataFrameResizable"] {{ background-color: #1e2240 !important; }}
+""" if _dark else f"""
+.stApp {{
+    background-color: {THEME['bg_page']} !important;
+}}
+"""
+
+# ── Inject CSS ────────────────────────────────────────────────────────────────
+st.markdown(f"""
+<style>
+{_dark_extra}
+
+/* ── Card containers (only bordered st.container, not plain wrappers/columns) ── */
+[data-testid="stVerticalBlockBorderWrapper"]:not(.st-emotion-cache-0) {{
+    background-color: {THEME['bg_card']} !important;
+    border: 1px solid {THEME['border_card']} !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 18px {THEME['shadow']} !important;
+}}
+
+/* ── Tabs bar ── */
+[data-baseweb="tab-list"] {{
+    gap: 6px;
+    border-bottom: 2px solid {THEME['tab_border']} !important;
+}}
+[data-baseweb="tab"] {{
+    border-radius: 8px 8px 0 0 !important;
+    padding: 8px 28px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+}}
+
+/* ── Remove default Streamlit top padding inside cards ── */
+[data-testid="stVerticalBlockBorderWrapper"] > div {{
+    padding-top: 10px !important;
+    padding-bottom: 6px !important;
+}}
+
+/* ── Gap between cards ── */
+.card-gap {{ margin-top: 16px; }}
+
+/* ── Radio controls compact ── */
+[data-testid="stRadio"] > div {{ gap: 6px !important; }}
+
+/* ── Theme toggle aligned top-right ── */
+.theme-toggle-wrap {{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding-top: 4px;
+}}
+</style>
+""", unsafe_allow_html=True)
+
+# ── Plotly config: no toolbar, responsive ─────────────────────────────────────
+PLOTLY_CFG = {"displayModeBar": False, "responsive": True}
+
+# ── Named colours ─────────────────────────────────────────────────────────────
 NAMED_COLORS = {
     "Bank Credit":     "#1f77b4",
     "Food Credit":     "#aec7e8",
@@ -30,7 +141,22 @@ NAMED_COLORS = {
 }
 QUAL = px.colors.qualitative.Plotly + px.colors.qualitative.D3
 
+# Accent colour per section (used in card headers)
+SEC_COLORS = [
+    "#4e8ef7",   # 0 Bank Credit        – blue
+    "#2ca02c",   # 1 Main Sectors       – green
+    "#e05c5c",   # 2 Industry by Size   – red
+    "#a87fdb",   # 3 Services           – purple
+    "#f0912a",   # 4 Personal Loans     – orange
+    "#e8b94f",   # 5 Priority Sector    – amber
+    "#2ec4b6",   # 6 Industry by Type   – teal
+]
 
+ROMAN_ORDER = ["i","ii","iii","iv","v","vi","vii","viii","ix","x",
+               "xi","xii","xiii","xiv","xv"]
+
+
+# ── Helpers ───────────────────────────────────────────────────────────────────
 def assign_colors(codes: list, labels: dict) -> dict:
     cmap, qi = {}, 0
     for code in codes:
@@ -41,6 +167,57 @@ def assign_colors(codes: list, labels: dict) -> dict:
             cmap[code] = QUAL[qi % len(QUAL)]
             qi += 1
     return cmap
+
+
+def fmt_cr(v: float) -> str:
+    return f"₹{v / 1e5:.2f} L Cr"
+
+
+def date_label(ts) -> str:
+    return pd.Timestamp(ts).strftime("%b %Y")
+
+
+def sort_codes_numeric(codes: list) -> list:
+    def key(c):
+        try:
+            return tuple(int(p) for p in str(c).split("."))
+        except ValueError:
+            return (float("inf"),)
+    return sorted(codes, key=key)
+
+
+def children_of(source_df: pd.DataFrame, parent_code: str,
+                parent_stmt: str = "Statement 1",
+                memo: bool = False) -> tuple:
+    mask = (
+        (source_df["parent_code"] == parent_code)
+        & (source_df["parent_statement"] == parent_stmt)
+    )
+    if not memo:
+        mask &= ~source_df["is_priority_sector_memo"]
+    data = source_df[mask].copy()
+    cl = (
+        data[["code", "sector"]].drop_duplicates()
+        .set_index("code")["sector"].to_dict()
+    )
+    codes = sort_codes_numeric(list(cl.keys()))
+    return data, codes, cl
+
+
+def card_header(title: str, icon: str, color: str) -> None:
+    """Coloured left-border header inside a card."""
+    st.markdown(
+        f'<div style="'
+        f'background:{color}1a;'
+        f'border-left:4px solid {color};'
+        f'padding:8px 16px;'
+        f'border-radius:6px;'
+        f'margin-bottom:12px;">'
+        f'<span style="font-size:16px;font-weight:700;color:{color};">'
+        f'{icon}&nbsp;&nbsp;{title}'
+        f'</span></div>',
+        unsafe_allow_html=True,
+    )
 
 
 # ── Data loading ──────────────────────────────────────────────────────────────
@@ -55,11 +232,6 @@ def load_data() -> pd.DataFrame:
 
 @st.cache_data
 def compute_growth(data_df: pd.DataFrame, method: str) -> pd.DataFrame:
-    """Return growth_pct per (statement, code, date).
-
-    Note: data_df is hashed for caching — keep slices small.
-    method: 'yoy' | 'fy'
-    """
     dates = sorted(data_df["date"].unique())
     pairs = []
     for d in dates:
@@ -71,361 +243,375 @@ def compute_growth(data_df: pd.DataFrame, method: str) -> pd.DataFrame:
             best = min(cands, key=lambda x: abs((x - target).days))
             if abs((best - target).days) <= 30:
                 pairs.append((d, best))
-        else:  # fy
+        else:
             mend = [x for x in dates if x.month == 3 and x < d]
             if mend:
                 pairs.append((d, max(mend)))
 
     rows = []
     for curr, prev in pairs:
-        cv = data_df[data_df["date"] == curr].set_index(["statement", "code"])["outstanding_cr"]
-        pv = data_df[data_df["date"] == prev].set_index(["statement", "code"])["outstanding_cr"]
+        cv = data_df[data_df["date"] == curr].set_index(["statement","code"])["outstanding_cr"]
+        pv = data_df[data_df["date"] == prev].set_index(["statement","code"])["outstanding_cr"]
         pct = ((cv - pv) / pv * 100).reset_index()
         pct.columns = ["statement", "code", "growth_pct"]
         pct["date"] = curr
         rows.append(pct)
-
     return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame()
 
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
-def fmt_cr(v: float) -> str:
-    return f"₹{v / 1e5:.2f} L Cr"
-
-
-def date_label(ts) -> str:
-    return pd.Timestamp(ts).strftime("%b %Y")
-
-
-def sort_codes_numeric(codes: list) -> list:
-    """Sort dotted numeric codes correctly (3.10 > 3.9)."""
-    def key(c):
-        try:
-            return tuple(int(p) for p in str(c).split("."))
-        except ValueError:
-            return (float("inf"),)
-    return sorted(codes, key=key)
-
-
-def children_of(source_df: pd.DataFrame, parent_code: str,
-                parent_stmt: str = "Statement 1",
-                memo: bool = False) -> tuple:
-    """Return (data, codes, labels) for direct children of parent_code."""
-    mask = (
-        (source_df["parent_code"] == parent_code) &
-        (source_df["parent_statement"] == parent_stmt)
-    )
-    if not memo:
-        mask &= ~source_df["is_priority_sector_memo"]
-    data = source_df[mask].copy()
-    cl = (
-        data[["code", "sector"]].drop_duplicates()
-        .set_index("code")["sector"].to_dict()
-    )
-    codes = sort_codes_numeric(list(cl.keys()))
-    return data, codes, cl
-
-
-# ── Core section renderer ─────────────────────────────────────────────────────
-def render_section(sec_idx: int, data: pd.DataFrame, codes: list,
-                   labels: dict, pct_label: str = "% Share",
-                   dist_codes: list = None) -> None:
-    """Render Trend + Distribution sub-tabs for one section.
-
-    dist_codes: if provided, use this subset for the Distribution tab only.
-                Useful when the trend has an aggregate total line (e.g. Bank
-                Credit = Food + Non-food) that must not be double-counted in
-                the stacked bar.
+# ── Chart renderers ───────────────────────────────────────────────────────────
+def _base_layout(n_legend: int = 0) -> dict:
     """
-    if not codes or data.empty:
-        st.info("No data available for this section.")
+    Base Plotly layout with a dynamic top margin sized to the legend.
+    n_legend = number of series → calculates required rows at ~6 items/row
+    so the legend never overflows into Streamlit controls above the chart.
+    """
+    # ~6 items fit per row at typical widths (conservative for mobile)
+    rows = max(1, math.ceil(n_legend / 6)) if n_legend else 0
+    t_margin = 10 + rows * 26  # 26 px per legend row
+    layout: dict = dict(
+        height=370,
+        margin=dict(l=0, r=0, t=t_margin, b=20),
+        hovermode="x unified",
+        plot_bgcolor="rgba(0,0,0,0)",
+        paper_bgcolor="rgba(0,0,0,0)",
+        xaxis=dict(tickformat="%b %Y", gridcolor=THEME["grid"], zeroline=False),
+        yaxis=dict(gridcolor=THEME["grid"], zeroline=False),
+        font=dict(color=THEME["font"]),
+    )
+    if n_legend:
+        layout["showlegend"] = True
+        layout["legend"] = dict(
+            orientation="h",
+            yanchor="bottom", y=1.02,
+            xanchor="left", x=0,
+            bgcolor="rgba(0,0,0,0)",
+        )
+    else:
+        layout["showlegend"] = False
+    return layout
+
+
+def render_trend(sec_idx: int, data: pd.DataFrame,
+                 codes: list, labels: dict) -> None:
+    if data.empty or not codes:
+        st.info("No data for this section.")
         return
 
-    # Distribution may use a different (sub)set of codes than Trend
-    _dist_codes = dist_codes if dist_codes is not None else codes
-
     cmap = assign_colors(codes, labels)
-    t_trend, t_dist = st.tabs(["📈  Trend", "📊  Distribution"])
 
-    # ── Trend ─────────────────────────────────────────────────────────────────
-    with t_trend:
-        c1, c2, _ = st.columns([2, 2, 4])
-        with c1:
-            view = st.radio(
-                "View", ["Absolute", "Growth Rate"],
-                horizontal=True, label_visibility="collapsed",
-                key=f"view_{sec_idx}",
-            )
-        with c2:
-            gm = None
-            if view == "Growth Rate":
-                gm = st.radio(
-                    "Growth", ["YoY", "FY"],
-                    horizontal=True, label_visibility="collapsed",
-                    key=f"gm_{sec_idx}",
-                )
-
-        fig = go.Figure()
-
-        if view == "Absolute":
-            for code in codes:
-                seg = data[data["code"] == code].sort_values("date")
-                if seg.empty:
-                    continue
-                name = labels.get(code, code)
-                fig.add_trace(go.Scatter(
-                    x=seg["date"], y=seg["outstanding_cr"],
-                    mode="lines+markers", name=name,
-                    line=dict(color=cmap.get(code), width=2),
-                    hovertemplate=(
-                        f"<b>{name}</b><br>%{{x|%b %Y}}<br>"
-                        "₹%{y:,.0f} Cr<extra></extra>"
-                    ),
-                ))
-            fig.update_layout(yaxis_title="₹ Crore")
-
-        else:  # Growth Rate
-            gdf = compute_growth(data, "yoy" if gm == "YoY" else "fy")
-            if gdf.empty:
-                st.warning("Not enough data to compute growth rates.")
-            else:
-                for code in codes:
-                    seg = gdf[gdf["code"] == code].sort_values("date")
-                    if seg.empty:
-                        continue
-                    name = labels.get(code, code)
-                    fig.add_trace(go.Scatter(
-                        x=seg["date"], y=seg["growth_pct"],
-                        mode="lines+markers", name=name,
-                        line=dict(color=cmap.get(code), width=2),
-                        hovertemplate=(
-                            f"<b>{name}</b><br>%{{x|%b %Y}}<br>"
-                            "%{y:.1f}%<extra></extra>"
-                        ),
-                    ))
-                fig.add_hline(y=0, line_dash="dash", line_color="grey", line_width=1)
-                fig.update_layout(yaxis_title=f"{gm} Growth (%)")
-
-        fig.update_layout(
-            height=420,
-            margin=dict(l=0, r=0, t=10, b=0),
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
-            hovermode="x unified",
-            xaxis=dict(tickformat="%b %Y"),
+    # ── Controls row ──────────────────────────────────────────────────────────
+    c1, c2, _ = st.columns([2, 2, 5])
+    with c1:
+        view = st.radio(
+            "View", ["Absolute", "Growth Rate"],
+            horizontal=True, label_visibility="collapsed",
+            key=f"view_t_{sec_idx}",
         )
-        st.plotly_chart(fig, use_container_width=True)
-
-    # ── Distribution ──────────────────────────────────────────────────────────
-    with t_dist:
-        c1, _ = st.columns([3, 5])
-        with c1:
-            dist_mode = st.radio(
-                "Show as", ["₹ Crore", pct_label],
+    with c2:
+        gm = None
+        if view == "Growth Rate":
+            gm = st.radio(
+                "Growth", ["YoY", "FY"],
                 horizontal=True, label_visibility="collapsed",
-                key=f"dist_{sec_idx}",
+                key=f"gm_t_{sec_idx}",
             )
 
-        # Build per-date, per-code values (use _dist_codes, not codes)
-        rows = []
-        for d in all_dates:
-            sl = data[data["date"] == d]
-            for code in _dist_codes:
-                v = sl[sl["code"] == code]["outstanding_cr"].values
-                rows.append({
-                    "date": d,
-                    "code": code,
-                    "sector": labels.get(code, code),
-                    "value": float(v[0]) if len(v) else 0.0,
-                })
-        ddf = pd.DataFrame(rows)
+    # ── Chart (legend above plot; top margin sized dynamically to fit) ────────
+    fig = go.Figure()
 
-        if dist_mode != "₹ Crore":
-            totals = ddf.groupby("date")["value"].transform("sum")
-            ddf["plot_val"] = ddf["value"] / totals.replace(0, float("nan")) * 100
-            y_label = pct_label
-            hover_fmt = "%{y:.1f}%"
-            yax = dict(title=y_label, range=[0, 100])
-        else:
-            ddf["plot_val"] = ddf["value"]
-            y_label = "₹ Crore"
-            hover_fmt = "₹%{y:,.0f} Cr"
-            yax = dict(title=y_label)
-
-        fig2 = go.Figure()
-        for code in _dist_codes:
-            seg = ddf[ddf["code"] == code].sort_values("date")
+    if view == "Absolute":
+        for code in codes:
+            seg = data[data["code"] == code].sort_values("date")
+            if seg.empty:
+                continue
             name = labels.get(code, code)
-            fig2.add_trace(go.Bar(
-                x=seg["date"].apply(date_label),
-                y=seg["plot_val"],
-                name=name,
-                marker_color=cmap.get(code),
-                hovertemplate=f"<b>{name}</b><br>%{{x}}<br>{hover_fmt}<extra></extra>",
+            fig.add_trace(go.Scatter(
+                x=seg["date"], y=seg["outstanding_cr"],
+                mode="lines+markers", name=name,
+                line=dict(color=cmap.get(code), width=2.5),
+                marker=dict(size=6),
+                hovertemplate=(
+                    f"<b>{name}</b><br>%{{x|%b %Y}}<br>"
+                    "₹%{y:,.0f} Cr<extra></extra>"
+                ),
             ))
+        fig.update_layout(**_base_layout(len(codes)), yaxis_title="₹ Crore")
 
-        fig2.update_layout(
-            barmode="stack",
-            height=420,
-            margin=dict(l=0, r=0, t=10, b=0),
-            yaxis=yax,
-            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
-            hovermode="x unified",
+    else:
+        gdf = compute_growth(data, "yoy" if gm == "YoY" else "fy")
+        if gdf.empty:
+            st.warning("Not enough data to compute growth rates.")
+            return
+        for code in codes:
+            seg = gdf[gdf["code"] == code].sort_values("date")
+            if seg.empty:
+                continue
+            name = labels.get(code, code)
+            fig.add_trace(go.Scatter(
+                x=seg["date"], y=seg["growth_pct"],
+                mode="lines+markers", name=name,
+                line=dict(color=cmap.get(code), width=2.5),
+                marker=dict(size=6),
+                hovertemplate=(
+                    f"<b>{name}</b><br>%{{x|%b %Y}}<br>"
+                    "%{y:.1f}%<extra></extra>"
+                ),
+            ))
+        fig.add_hline(y=0, line_dash="dash", line_color=THEME["hline"], line_width=1)
+        fig.update_layout(**_base_layout(len(codes)), yaxis_title=f"{gm} Growth (%)")
+
+    st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CFG)
+
+
+def render_dist(sec_idx: int, data: pd.DataFrame,
+                codes: list, labels: dict,
+                pct_label: str = "% Share",
+                dist_codes: list = None) -> None:
+    if data.empty or not codes:
+        st.info("No data for this section.")
+        return
+
+    _dc = dist_codes if dist_codes is not None else codes
+    cmap = assign_colors(codes, labels)
+
+    # ── Controls row ──────────────────────────────────────────────────────────
+    c1, _ = st.columns([3, 6])
+    with c1:
+        dist_mode = st.radio(
+            "Show as", ["₹ Crore", pct_label],
+            horizontal=True, label_visibility="collapsed",
+            key=f"dist_d_{sec_idx}",
         )
-        st.plotly_chart(fig2, use_container_width=True)
 
-        # Summary table at latest date
-        st.caption(f"Breakdown at **{date_label(latest_date)}**")
-        tbl = ddf[ddf["date"] == latest_date].copy()
-        total = tbl["value"].sum()
-        tbl["Share (%)"] = (
-            (tbl["value"] / total * 100).round(1) if total else 0.0
-        )
-        tbl["₹ Crore"] = tbl["value"].apply(lambda v: f"{v:,.0f}")
-        st.dataframe(
-            tbl[["sector", "₹ Crore", "Share (%)"]].rename(columns={"sector": "Sector"}),
-            hide_index=True,
-            use_container_width=True,
-        )
+    rows = []
+    for d in all_dates:
+        sl = data[data["date"] == d]
+        for code in _dc:
+            v = sl[sl["code"] == code]["outstanding_cr"].values
+            rows.append({
+                "date": d, "code": code,
+                "sector": labels.get(code, code),
+                "value": float(v[0]) if len(v) else 0.0,
+            })
+    ddf = pd.DataFrame(rows)
 
+    if dist_mode != "₹ Crore":
+        totals = ddf.groupby("date")["value"].transform("sum")
+        ddf["plot_val"] = ddf["value"] / totals.replace(0, float("nan")) * 100
+        yax = dict(title=pct_label, range=[0, 100],
+                   gridcolor=THEME["grid"], zeroline=False)
+        hover_fmt = "%{y:.1f}%"
+    else:
+        ddf["plot_val"] = ddf["value"]
+        yax = dict(title="₹ Crore", gridcolor=THEME["grid"], zeroline=False)
+        hover_fmt = "₹%{y:,.0f} Cr"
 
-# ── Load & global slices ──────────────────────────────────────────────────────
-df = load_data()
-s1 = df[df["statement"] == "Statement 1"]
-s2 = df[df["statement"] == "Statement 2"]
-all_dates = sorted(df["date"].unique())
-latest_date = all_dates[-1]
+    fig2 = go.Figure()
+    for code in _dc:
+        seg = ddf[ddf["code"] == code].sort_values("date")
+        name = labels.get(code, code)
+        fig2.add_trace(go.Bar(
+            x=seg["date"].apply(date_label),
+            y=seg["plot_val"],
+            name=name,
+            marker_color=cmap.get(code),
+            hovertemplate=f"<b>{name}</b><br>%{{x}}<br>{hover_fmt}<extra></extra>",
+        ))
 
-# ── Page header ───────────────────────────────────────────────────────────────
-st.title("RBI Gross Bank Credit")
-st.caption(
-    f"Source: RBI Sector/Industry-wise Bank Credit (SIBC) Return  |  "
-    f"Values in ₹ Crore  |  Latest data: **{date_label(latest_date)}**"
-)
-latest_bc = s1[(s1["code"] == "I") & (s1["date"] == latest_date)]["outstanding_cr"].values[0]
-st.metric("Total Bank Credit", fmt_cr(latest_bc))
-st.divider()
+    layout = _base_layout(len(_dc))
+    layout["yaxis"] = yax
+    layout.pop("yaxis_title", None)
+    fig2.update_layout(**layout, barmode="stack")
+    st.plotly_chart(fig2, use_container_width=True, config=PLOTLY_CFG)
 
-# ── 7 top-level tabs ──────────────────────────────────────────────────────────
-tabs = st.tabs([
-    "🏦 Bank Credit",
-    "📊 Main Sectors",
-    "🏭 Industry by Size",
-    "🛎 Services",
-    "💳 Personal Loans",
-    "⭐ Priority Sector",
-    "🔩 Industry by Type",
-])
-
-# ── 1. Bank Credit — Food vs Non-food ────────────────────────────────────────
-with tabs[0]:
-    codes1  = ["I", "II", "III"]
-    labels1 = {"I": "Bank Credit", "II": "Food Credit", "III": "Non-food Credit"}
-    data1   = s1[s1["code"].isin(codes1) & ~s1["is_priority_sector_memo"]].copy()
-    # Trend shows all 3 lines; Distribution only stacks Food + Non-food
-    # (Bank Credit = Food + Non-food, so including I would double-count)
-    render_section(0, data1, codes1, labels1, pct_label="% of Bank Credit",
-                   dist_codes=["II", "III"])
-
-# ── 2. Main Sectors ───────────────────────────────────────────────────────────
-with tabs[1]:
-    codes2  = ["1", "2", "3", "4"]
-    labels2 = {"1": "Agriculture", "2": "Industry", "3": "Services", "4": "Personal Loans"}
-    data2   = s1[s1["code"].isin(codes2) & ~s1["is_priority_sector_memo"]].copy()
-    render_section(1, data2, codes2, labels2, pct_label="% Share")
-
-# ── 3. Industry by Size ───────────────────────────────────────────────────────
-with tabs[2]:
-    data3, codes3, labels3 = children_of(s1, "2")
-    render_section(2, data3, codes3, labels3, pct_label="% of Industry")
-
-# ── 4. Services constituents ──────────────────────────────────────────────────
-with tabs[3]:
-    data4, codes4, labels4 = children_of(s1, "3")
-    render_section(3, data4, codes4, labels4, pct_label="% of Services")
-
-# ── 5. Personal Loans constituents ───────────────────────────────────────────
-with tabs[4]:
-    data5, codes5, labels5 = children_of(s1, "4")
-    render_section(4, data5, codes5, labels5, pct_label="% of Personal Loans")
-
-# ── 6. Priority Sector ────────────────────────────────────────────────────────
-with tabs[5]:
-    data6 = s1[s1["is_priority_sector_memo"].astype(bool)].copy()
-    cl6   = (
-        data6[["code", "sector"]].drop_duplicates()
-        .set_index("code")["sector"].to_dict()
+    # Summary table
+    st.caption(f"Breakdown at **{date_label(latest_date)}**")
+    tbl = ddf[ddf["date"] == latest_date].copy()
+    total = tbl["value"].sum()
+    tbl["Share (%)"] = (tbl["value"] / total * 100).round(1) if total else 0.0
+    tbl["₹ Crore"] = tbl["value"].apply(lambda v: f"{v:,.0f}")
+    st.dataframe(
+        tbl[["sector", "₹ Crore", "Share (%)"]].rename(columns={"sector": "Sector"}),
+        hide_index=True, use_container_width=True,
     )
-    # Sort priority sector codes in roman numeral order
-    roman_order = ["i","ii","iii","iv","v","vi","vii","viii","ix","x",
-                   "xi","xii","xiii","xiv","xv"]
-    codes6 = sorted(cl6.keys(), key=lambda c: roman_order.index(c) if c in roman_order else 99)
-    render_section(5, data6, codes6, cl6, pct_label="% of Priority Sector")
 
-# ── 7. Industry by Type (Statement 2) ────────────────────────────────────────
-with tabs[6]:
-    data7, codes7, labels7 = children_of(s2, "2", parent_stmt="Statement 1")
 
-    # ── Filter controls ───────────────────────────────────────────────────────
-    # Compute each industry's % share at latest date (used for both filter modes)
-    latest_slice = data7[data7["date"] == latest_date]
-    total7 = latest_slice["outstanding_cr"].sum()
-    shares7 = {
-        code: (
-            latest_slice[latest_slice["code"] == code]["outstanding_cr"].values[0] / total7 * 100
-            if len(latest_slice[latest_slice["code"] == code]) and total7 else 0.0
-        )
-        for code in codes7
-    }
+# ── Industry by Type filter helpers ──────────────────────────────────────────
+def _filtered_codes7(mode_key: str, n_key: str, x_key: str) -> list:
+    mode = st.session_state.get(mode_key, "Top N")
+    if mode == "Top N":
+        n = int(st.session_state.get(n_key, min(10, len(codes7))))
+        return sort_codes_numeric(codes7_by_size[:n])
+    elif mode == "≥ X% coverage":
+        x = float(st.session_state.get(x_key, 80.0))
+        cumulative, selected = 0.0, []
+        for code in codes7_by_size:
+            selected.append(code)
+            cumulative += shares7[code]
+            if cumulative >= x:
+                break
+        return sort_codes_numeric(selected)
+    return codes7  # All
 
-    # Industries ranked largest-to-smallest (used by both filter modes)
-    codes7_by_size = sorted(codes7, key=lambda c: shares7[c], reverse=True)
+
+def render_industry_filter(key_suffix: str) -> list:
+    """Renders filter controls and returns filtered code list."""
+    mk = f"ind_type_filter_{key_suffix}"
+    nk = f"ind_type_n_{key_suffix}"
+    xk = f"ind_type_x_{key_suffix}"
 
     c1, c2, c3 = st.columns([2, 1, 5])
     with c1:
-        filter_mode = st.radio(
+        fmode = st.radio(
             "Display", ["Top N", "≥ X% coverage", "All"],
-            horizontal=True, label_visibility="collapsed",
-            key="ind_type_filter",
+            horizontal=True, label_visibility="collapsed", key=mk,
         )
     with c2:
-        if filter_mode == "Top N":
-            n_val = st.number_input(
-                "N", min_value=1, max_value=len(codes7), value=min(10, len(codes7)),
-                step=1, key="ind_type_n", label_visibility="collapsed",
+        if fmode == "Top N":
+            st.number_input(
+                "N", min_value=1, max_value=len(codes7),
+                value=min(10, len(codes7)), step=1,
+                key=nk, label_visibility="collapsed",
             )
-            filtered_codes7 = sort_codes_numeric(codes7_by_size[:int(n_val)])
-
-        elif filter_mode == "≥ X% coverage":
-            x_val = st.number_input(
-                "Coverage %", min_value=10.0, max_value=100.0, value=80.0,
-                step=5.0, format="%.0f", key="ind_type_x", label_visibility="collapsed",
+        elif fmode == "≥ X% coverage":
+            st.number_input(
+                "Coverage %", min_value=10.0, max_value=100.0,
+                value=80.0, step=5.0, format="%.0f",
+                key=xk, label_visibility="collapsed",
             )
-            # Add industries largest-first until cumulative share reaches x_val
-            cumulative, selected = 0.0, []
-            for code in codes7_by_size:
-                selected.append(code)
-                cumulative += shares7[code]
-                if cumulative >= x_val:
-                    break
-            filtered_codes7 = sort_codes_numeric(selected)
-
-        else:
-            filtered_codes7 = codes7
-
-    # Caption: coverage of shown set + what's hidden
     with c3:
-        shown_pct  = sum(shares7[c] for c in filtered_codes7)
-        hidden     = len(codes7) - len(filtered_codes7)
+        filtered = _filtered_codes7(mk, nk, xk)
+        shown_pct  = sum(shares7[c] for c in filtered)
+        hidden     = len(codes7) - len(filtered)
         hidden_pct = 100.0 - shown_pct
         if hidden:
             st.caption(
-                f"Showing **{len(filtered_codes7)}** of {len(codes7)} types "
-                f"covering **{shown_pct:.1f}%** of Industry "
-                f"— {hidden} others account for the remaining **{hidden_pct:.1f}%**."
+                f"Showing **{len(filtered)}** of {len(codes7)} types "
+                f"covering **{shown_pct:.1f}%** of Industry — "
+                f"{hidden} others account for the remaining **{hidden_pct:.1f}%**."
             )
         else:
             st.caption(f"Showing all **{len(codes7)}** industry types.")
 
-    filtered_data7   = data7[data7["code"].isin(filtered_codes7)]
-    filtered_labels7 = {c: labels7[c] for c in filtered_codes7}
-    render_section(6, filtered_data7, filtered_codes7, filtered_labels7, pct_label="% of Industry")
+    return filtered
+
+
+# ── Load data ─────────────────────────────────────────────────────────────────
+df          = load_data()
+s1          = df[df["statement"] == "Statement 1"]
+s2          = df[df["statement"] == "Statement 2"]
+all_dates   = sorted(df["date"].unique())
+latest_date = all_dates[-1]
+
+# ── Page header + theme toggle ─────────────────────────────────────────────────
+col_hdr, col_toggle = st.columns([12, 1])
+with col_hdr:
+    st.title("RBI Gross Bank Credit")
+    st.caption(
+        f"Source: RBI Sector/Industry-wise Bank Credit (SIBC) Return  |  "
+        f"Values in ₹ Crore  |  Latest data: **{date_label(latest_date)}**"
+    )
+    latest_bc = s1[(s1["code"] == "I") & (s1["date"] == latest_date)]["outstanding_cr"].values[0]
+    st.metric("Total Bank Credit", fmt_cr(latest_bc))
+
+with col_toggle:
+    # Spacer to push toggle down level with title
+    st.markdown("<div style='height:22px'></div>", unsafe_allow_html=True)
+    st.toggle(
+        "🌙" if not _dark else "☀️",
+        key="dark_mode",
+        help="Switch between light and dark theme",
+    )
+
+st.divider()
+
+# ── Pre-compute all section data ──────────────────────────────────────────────
+
+# 1 – Bank Credit
+codes1  = ["I", "II", "III"]
+labels1 = {"I": "Bank Credit", "II": "Food Credit", "III": "Non-food Credit"}
+data1   = s1[s1["code"].isin(codes1) & ~s1["is_priority_sector_memo"]].copy()
+
+# 2 – Main Sectors
+codes2  = ["1", "2", "3", "4"]
+labels2 = {"1": "Agriculture", "2": "Industry", "3": "Services", "4": "Personal Loans"}
+data2   = s1[s1["code"].isin(codes2) & ~s1["is_priority_sector_memo"]].copy()
+
+# 3 – Industry by Size
+data3, codes3, labels3 = children_of(s1, "2")
+
+# 4 – Services
+data4, codes4, labels4 = children_of(s1, "3")
+
+# 5 – Personal Loans
+data5, codes5, labels5 = children_of(s1, "4")
+
+# 6 – Priority Sector
+data6 = s1[s1["is_priority_sector_memo"].astype(bool)].copy()
+cl6   = (
+    data6[["code", "sector"]].drop_duplicates()
+    .set_index("code")["sector"].to_dict()
+)
+codes6 = sorted(cl6.keys(),
+                key=lambda c: ROMAN_ORDER.index(c) if c in ROMAN_ORDER else 99)
+
+# 7 – Industry by Type (Statement 2) + filter pre-computation
+data7, codes7, labels7 = children_of(s2, "2", parent_stmt="Statement 1")
+latest_sl7  = data7[data7["date"] == latest_date]
+total7      = latest_sl7["outstanding_cr"].sum()
+shares7     = {
+    code: (
+        latest_sl7[latest_sl7["code"] == code]["outstanding_cr"].values[0] / total7 * 100
+        if len(latest_sl7[latest_sl7["code"] == code]) and total7 else 0.0
+    )
+    for code in codes7
+}
+codes7_by_size = sorted(codes7, key=lambda c: shares7[c], reverse=True)
+
+# ── Section manifest (for the 6 straightforward sections) ────────────────────
+# (title, icon, sec_color_idx, data, codes, labels, pct_label, dist_codes)
+SECTIONS = [
+    ("Bank Credit",      "🏦", 0, data1, codes1, labels1, "% of Bank Credit",    ["II", "III"]),
+    ("Main Sectors",     "📊", 1, data2, codes2, labels2, "% Share",              None),
+    ("Industry by Size", "🏭", 2, data3, codes3, labels3, "% of Industry",        None),
+    ("Services",         "🛎", 3, data4, codes4, labels4, "% of Services",        None),
+    ("Personal Loans",   "💳", 4, data5, codes5, labels5, "% of Personal Loans",  None),
+    ("Priority Sector",  "⭐", 5, data6, codes6, cl6,     "% of Priority Sector", None),
+]
+
+# ── Two main tabs ─────────────────────────────────────────────────────────────
+tab_trend, tab_dist = st.tabs(["📈  Trend", "📊  Distribution"])
+
+# ────────────────── TREND TAB ─────────────────────────────────────────────────
+with tab_trend:
+    for i, (title, icon, ci, data, codes, labels, pct_label, _) in enumerate(SECTIONS):
+        with st.container(border=True):
+            card_header(title, icon, SEC_COLORS[ci])
+            render_trend(i, data, codes, labels)
+        st.markdown('<div class="card-gap"></div>', unsafe_allow_html=True)
+
+    # Section 7 – Industry by Type (has its own filter)
+    with st.container(border=True):
+        card_header("Industry by Type", "🔩", SEC_COLORS[6])
+        filtered7t = render_industry_filter("t")
+        render_trend(6, data7[data7["code"].isin(filtered7t)],
+                     filtered7t, {c: labels7[c] for c in filtered7t})
+    st.markdown('<div class="card-gap"></div>', unsafe_allow_html=True)
+
+# ────────────────── DISTRIBUTION TAB ─────────────────────────────────────────
+with tab_dist:
+    for i, (title, icon, ci, data, codes, labels, pct_label, dist_codes) in enumerate(SECTIONS):
+        with st.container(border=True):
+            card_header(title, icon, SEC_COLORS[ci])
+            render_dist(i, data, codes, labels, pct_label, dist_codes)
+        st.markdown('<div class="card-gap"></div>', unsafe_allow_html=True)
+
+    # Section 7 – Industry by Type
+    with st.container(border=True):
+        card_header("Industry by Type", "🔩", SEC_COLORS[6])
+        filtered7d = render_industry_filter("d")
+        render_dist(6, data7[data7["code"].isin(filtered7d)],
+                    filtered7d, {c: labels7[c] for c in filtered7d},
+                    "% of Industry")
+    st.markdown('<div class="card-gap"></div>', unsafe_allow_html=True)
