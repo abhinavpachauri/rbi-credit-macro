@@ -148,8 +148,8 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-# ── Plotly config: no toolbar, responsive ─────────────────────────────────────
-PLOTLY_CFG = {"displayModeBar": False, "responsive": True}
+# ── Plotly config: no toolbar, no zoom/pan gestures (tap/click only) ──────────
+PLOTLY_CFG = {"displayModeBar": False, "responsive": True, "scrollZoom": False}
 
 # ── Named colours ─────────────────────────────────────────────────────────────
 NAMED_COLORS = {
@@ -341,10 +341,11 @@ def _base_layout(n_legend: int = 0, legend_below: bool = False) -> dict:
         height=chart_height,
         margin=dict(l=0, r=0, t=t_margin, b=b_margin),
         hovermode="x unified",
+        dragmode=False,
         plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
-        xaxis=dict(tickformat="%b %Y", gridcolor=THEME["grid"], zeroline=False),
-        yaxis=dict(gridcolor=THEME["grid"], zeroline=False),
+        xaxis=dict(tickformat="%b %Y", gridcolor=THEME["grid"], zeroline=False, fixedrange=True),
+        yaxis=dict(gridcolor=THEME["grid"], zeroline=False, fixedrange=True),
         font=dict(color=THEME["font"], size=13),
     )
     if legend_cfg:
