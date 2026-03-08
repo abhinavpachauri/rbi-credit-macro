@@ -13,6 +13,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+import streamlit.components.v1 as components
 
 sys.path.insert(0, str(Path(__file__).parent))
 from parser import read_parsed_csv
@@ -148,6 +149,99 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
+# ── Legend-click JS: wire HTML legend items → Plotly trace toggle ─────────────
+# Uses components.html (sandboxed iframe) + parent.window to reach the main
+# page DOM.  A MutationObserver re-attaches handlers on every Streamlit re-render.
+components.html("""
+<script>
+// Inject legend-click wiring as a real <script> in the parent page so that
+// event listeners run in the main-page JS context (not the sandboxed iframe).
+(function () {
+  var p = parent.window;
+  if (p.__legendClickInjected) return;
+  p.__legendClickInjected = true;
+
+  // String.raw avoids all Python/JS double-escape headaches.
+  // Note: [id^=hlegend-] works without quotes around the attribute value.
+  var code = String.raw`
+(function () {
+  // ── Plotly extraction ─────────────────────────────────────────────────────
+  // webpackChunk_streamlit_app is a plain Array until webpack's runtime
+  // installs its custom .push.  We check for that before probing so the
+  // execute-function is actually called synchronously.  preload() retries
+  // every 250 ms for up to 5 s so Plotly is ready before the first click.
+  function getPlotly() {
+    if (window.Plotly) return window.Plotly;
+    var c = window.webpackChunk_streamlit_app;
+    if (!c || c.push === Array.prototype.push) return null;
+    var req;
+    c.push([[Math.random().toString(36)], {}, function (r) { req = r; }]);
+    if (!req) return null;
+    var ids = Object.keys(req.m || {});
+    for (var i = 0; i < ids.length; i++) {
+      try {
+        var m = req(ids[i]);
+        if (m && typeof m.restyle === 'function' && typeof m.newPlot === 'function') {
+          window.Plotly = m; return m;
+        }
+      } catch (e) {}
+    }
+    return null;
+  }
+  function preload(n) {
+    if (window.Plotly || n <= 0) return;
+    if (!getPlotly()) setTimeout(function () { preload(n - 1); }, 250);
+  }
+  preload(20);
+
+  // ── Legend click handler ──────────────────────────────────────────────────
+  function attachLegend(legend) {
+    if (legend._lcb) return;
+    legend._lcb = true;
+    legend.addEventListener('click', function (e) {
+      var item = e.target.closest('[data-trace-idx]');
+      if (!item) return;
+      var plots = Array.from(document.querySelectorAll('.js-plotly-plot'));
+      var plot = null;
+      for (var i = 0; i < plots.length; i++) {
+        if (legend.compareDocumentPosition(plots[i]) & 4) { plot = plots[i]; break; }
+      }
+      if (!plot || !plot.data || !plot.data.length) return;
+      var P = getPlotly(); if (!P) return;
+      var idx = parseInt(item.getAttribute('data-trace-idx'), 10);
+      if (isNaN(idx) || idx >= plot.data.length) return;
+      var cur = plot.data[idx].visible;
+      var hidden = (cur === 'legendonly' || cur === false);
+      P.restyle(plot, { visible: hidden ? true : 'legendonly' }, [idx]);
+      item.style.opacity = hidden ? '1' : '0.35';
+    });
+  }
+
+  function scanAll() {
+    document.querySelectorAll('[id^=hlegend-]').forEach(attachLegend);
+  }
+
+  new MutationObserver(function (mutations) {
+    mutations.forEach(function (m) {
+      m.addedNodes.forEach(function (n) {
+        if (n.nodeType !== 1) return;
+        if (n.id && n.id.startsWith('hlegend-')) attachLegend(n);
+        if (n.querySelectorAll) n.querySelectorAll('[id^=hlegend-]').forEach(attachLegend);
+      });
+    });
+  }).observe(document.body, { childList: true, subtree: true });
+
+  scanAll();
+})();
+`;
+
+  var s = p.document.createElement('script');
+  s.textContent = code;
+  p.document.head.appendChild(s);
+})();
+</script>
+""", height=0)
+
 # ── Plotly config: no toolbar, no zoom/pan gestures (tap/click only) ──────────
 PLOTLY_CFG = {"displayModeBar": False, "responsive": True, "scrollZoom": False}
 
@@ -179,21 +273,29 @@ ROMAN_ORDER = ["i","ii","iii","iv","v","vi","vii","viii","ix","x",
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
-def _html_legend(codes: list, labels: dict, cmap: dict) -> None:
+def _html_legend(tab: str, sec_idx: int, codes: list, labels: dict, cmap: dict) -> None:
     """Flex-wrap legend rendered as HTML above the chart.
-    Takes exactly the space it needs — no Plotly top-margin estimation required."""
+    Takes exactly the space it needs — no Plotly top-margin estimation required.
+    Items are clickable: tap/click toggles the corresponding Plotly trace.
+
+    tab      – 't' for trend tab, 'd' for distribution tab (keeps ids unique)
+    sec_idx  – section index (0-based) within the tab
+    """
+    legend_id = f"hlegend-{tab}-{sec_idx}"
     items = "".join(
-        f'<span style="display:inline-flex;align-items:flex-start;'
-        f'margin:4px 16px 4px 0;max-width:100%;">'
+        f'<span data-trace-idx="{i}" style="display:inline-flex;align-items:flex-start;'
+        f'margin:4px 16px 4px 0;max-width:100%;'
+        f'cursor:pointer;user-select:none;transition:opacity 0.2s;">'
         f'<span style="width:14px;height:14px;border-radius:3px;flex-shrink:0;'
         f'background:{cmap.get(code, "#888")};margin-right:6px;margin-top:2px;"></span>'
         f'<span style="font-size:14px;color:{THEME["font"]};'
         f'word-break:break-word;min-width:0;">'
         f'{labels.get(code, code)}</span></span>'
-        for code in codes
+        for i, code in enumerate(codes)
     )
     st.markdown(
-        f'<div style="display:flex;flex-wrap:wrap;margin-bottom:6px;">{items}</div>',
+        f'<div id="{legend_id}" style="display:flex;flex-wrap:wrap;margin-bottom:6px;">'
+        f'{items}</div>',
         unsafe_allow_html=True,
     )
 
@@ -396,7 +498,7 @@ def render_trend(sec_idx: int, data: pd.DataFrame,
             )
 
     # ── Legend above chart (HTML flex-wrap — no Plotly top-margin needed) ──────
-    _html_legend(codes, labels, cmap)
+    _html_legend("t", sec_idx, codes, labels, cmap)
 
     # ── Chart ────────────────────────────────────────────────────────────────
     fig = go.Figure()
@@ -466,7 +568,7 @@ def render_dist(sec_idx: int, data: pd.DataFrame,
     )
 
     # ── Legend above chart (HTML flex-wrap; takes exact space, no blank gap) ──
-    _html_legend(_dc, labels, cmap)
+    _html_legend("d", sec_idx, _dc, labels, cmap)
 
     rows = []
     for d in all_dates:
