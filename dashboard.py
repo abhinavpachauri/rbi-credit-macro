@@ -183,11 +183,12 @@ def _html_legend(codes: list, labels: dict, cmap: dict) -> None:
     """Flex-wrap legend rendered as HTML above the chart.
     Takes exactly the space it needs — no Plotly top-margin estimation required."""
     items = "".join(
-        f'<span style="display:inline-flex;align-items:center;'
-        f'margin:4px 16px 4px 0;white-space:nowrap;">'
+        f'<span style="display:inline-flex;align-items:flex-start;'
+        f'margin:4px 16px 4px 0;max-width:100%;">'
         f'<span style="width:14px;height:14px;border-radius:3px;flex-shrink:0;'
-        f'background:{cmap.get(code, "#888")};margin-right:6px;"></span>'
-        f'<span style="font-size:14px;color:{THEME["font"]};">'
+        f'background:{cmap.get(code, "#888")};margin-right:6px;margin-top:2px;"></span>'
+        f'<span style="font-size:14px;color:{THEME["font"]};'
+        f'word-break:break-word;min-width:0;">'
         f'{labels.get(code, code)}</span></span>'
         for code in codes
     )
@@ -195,6 +196,19 @@ def _html_legend(codes: list, labels: dict, cmap: dict) -> None:
         f'<div style="display:flex;flex-wrap:wrap;margin-bottom:6px;">{items}</div>',
         unsafe_allow_html=True,
     )
+
+
+def _short_label(text: str, max_len: int = 26) -> str:
+    """Truncate long labels for hover tooltips so they don't overflow on mobile.
+    The full label is still shown in the HTML flex-wrap legend above the chart."""
+    if len(text) <= max_len:
+        return text
+    # Try to break at a word boundary
+    truncated = text[:max_len]
+    last_space = truncated.rfind(" ")
+    if last_space > max_len // 2:
+        return truncated[:last_space] + "…"
+    return truncated + "…"
 
 
 def assign_colors(codes: list, labels: dict) -> dict:
@@ -393,13 +407,14 @@ def render_trend(sec_idx: int, data: pd.DataFrame,
             if seg.empty:
                 continue
             name = labels.get(code, code)
+            short = _short_label(name)
             fig.add_trace(go.Scatter(
                 x=seg["date"], y=seg["outstanding_cr"],
-                mode="lines+markers", name=name,
+                mode="lines+markers", name=short,
                 line=dict(color=cmap.get(code), width=2.5),
                 marker=dict(size=6),
                 hovertemplate=(
-                    f"<b>{name}</b><br>%{{x|%b %Y}}<br>"
+                    f"<b>{short}</b><br>%{{x|%b %Y}}<br>"
                     "₹%{y:,.0f} Cr<extra></extra>"
                 ),
             ))
@@ -415,13 +430,14 @@ def render_trend(sec_idx: int, data: pd.DataFrame,
             if seg.empty:
                 continue
             name = labels.get(code, code)
+            short = _short_label(name)
             fig.add_trace(go.Scatter(
                 x=seg["date"], y=seg["growth_pct"],
-                mode="lines+markers", name=name,
+                mode="lines+markers", name=short,
                 line=dict(color=cmap.get(code), width=2.5),
                 marker=dict(size=6),
                 hovertemplate=(
-                    f"<b>{name}</b><br>%{{x|%b %Y}}<br>"
+                    f"<b>{short}</b><br>%{{x|%b %Y}}<br>"
                     "%{y:.1f}%<extra></extra>"
                 ),
             ))
@@ -479,12 +495,13 @@ def render_dist(sec_idx: int, data: pd.DataFrame,
     for code in _dc:
         seg = ddf[ddf["code"] == code].sort_values("date")
         name = labels.get(code, code)
+        short = _short_label(name)
         fig2.add_trace(go.Bar(
             x=seg["date"].apply(date_label),
             y=seg["plot_val"],
-            name=name,
+            name=short,
             marker_color=cmap.get(code),
-            hovertemplate=f"<b>{name}</b><br>%{{x}}<br>{hover_fmt}<extra></extra>",
+            hovertemplate=f"<b>{short}</b><br>%{{x}}<br>{hover_fmt}<extra></extra>",
         ))
 
     layout = _base_layout()   # no Plotly legend — shown as HTML above
