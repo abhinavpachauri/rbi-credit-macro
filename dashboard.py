@@ -128,6 +128,23 @@ st.markdown(f"""
     padding: 4px 6px !important;
     box-shadow: 0 2px 8px {THEME['shadow']} !important;
 }}
+
+/* ── Mobile legibility boosts ── */
+@media (max-width: 640px) {{
+    /* Caption/source line */
+    [data-testid="stCaptionContainer"] p {{
+        font-size: 13px !important;
+        line-height: 1.6 !important;
+    }}
+    /* Metric label */
+    [data-testid="stMetricLabel"] p {{
+        font-size: 15px !important;
+    }}
+    /* Radio button text */
+    [data-testid="stRadio"] p {{
+        font-size: 16px !important;
+    }}
+}}
 </style>
 """, unsafe_allow_html=True)
 
@@ -167,15 +184,15 @@ def _html_legend(codes: list, labels: dict, cmap: dict) -> None:
     Takes exactly the space it needs — no Plotly top-margin estimation required."""
     items = "".join(
         f'<span style="display:inline-flex;align-items:center;'
-        f'margin:3px 14px 3px 0;white-space:nowrap;">'
-        f'<span style="width:12px;height:12px;border-radius:2px;flex-shrink:0;'
-        f'background:{cmap.get(code, "#888")};margin-right:5px;"></span>'
-        f'<span style="font-size:12px;color:{THEME["font"]};">'
+        f'margin:4px 16px 4px 0;white-space:nowrap;">'
+        f'<span style="width:14px;height:14px;border-radius:3px;flex-shrink:0;'
+        f'background:{cmap.get(code, "#888")};margin-right:6px;"></span>'
+        f'<span style="font-size:14px;color:{THEME["font"]};">'
         f'{labels.get(code, code)}</span></span>'
         for code in codes
     )
     st.markdown(
-        f'<div style="display:flex;flex-wrap:wrap;margin-bottom:4px;">{items}</div>',
+        f'<div style="display:flex;flex-wrap:wrap;margin-bottom:6px;">{items}</div>',
         unsafe_allow_html=True,
     )
 
@@ -328,7 +345,7 @@ def _base_layout(n_legend: int = 0, legend_below: bool = False) -> dict:
         paper_bgcolor="rgba(0,0,0,0)",
         xaxis=dict(tickformat="%b %Y", gridcolor=THEME["grid"], zeroline=False),
         yaxis=dict(gridcolor=THEME["grid"], zeroline=False),
-        font=dict(color=THEME["font"]),
+        font=dict(color=THEME["font"], size=13),
     )
     if legend_cfg:
         layout["showlegend"] = True
