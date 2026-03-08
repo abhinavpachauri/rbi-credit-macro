@@ -116,12 +116,17 @@ st.markdown(f"""
 /* ── Radio controls compact ── */
 [data-testid="stRadio"] > div {{ gap: 6px !important; }}
 
-/* ── Theme toggle aligned top-right ── */
-.theme-toggle-wrap {{
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-start;
-    padding-top: 4px;
+/* ── Theme toggle: fixed top-right on all viewports ── */
+[data-testid="stCheckbox"] {{
+    position: fixed !important;
+    top: 54px !important;
+    right: 12px !important;
+    width: auto !important;
+    z-index: 999 !important;
+    background: {THEME['bg_card']} !important;
+    border-radius: 8px !important;
+    padding: 4px 6px !important;
+    box-shadow: 0 2px 8px {THEME['shadow']} !important;
 }}
 </style>
 """, unsafe_allow_html=True)
@@ -341,8 +346,8 @@ def render_trend(sec_idx: int, data: pd.DataFrame,
 
     cmap = assign_colors(codes, labels)
 
-    # ── Controls row ──────────────────────────────────────────────────────────
-    c1, c2, _ = st.columns([2, 2, 5])
+    # ── Controls row (no spacer column — avoids blank gap on mobile) ─────────
+    c1, c2 = st.columns([2, 2])
     with c1:
         view = st.radio(
             "View", ["Absolute", "Growth Rate"],
@@ -358,7 +363,10 @@ def render_trend(sec_idx: int, data: pd.DataFrame,
                 key=f"gm_t_{sec_idx}",
             )
 
-    # ── Chart (legend above plot; top margin sized dynamically to fit) ────────
+    # ── Legend above chart (HTML flex-wrap — no Plotly top-margin needed) ──────
+    _html_legend(codes, labels, cmap)
+
+    # ── Chart ────────────────────────────────────────────────────────────────
     fig = go.Figure()
 
     if view == "Absolute":
@@ -377,7 +385,7 @@ def render_trend(sec_idx: int, data: pd.DataFrame,
                     "₹%{y:,.0f} Cr<extra></extra>"
                 ),
             ))
-        fig.update_layout(**_base_layout(len(codes)), yaxis_title="₹ Crore")
+        fig.update_layout(**_base_layout(), yaxis_title="₹ Crore")
 
     else:
         gdf = compute_growth(data, "yoy" if gm == "YoY" else "fy")
@@ -400,7 +408,7 @@ def render_trend(sec_idx: int, data: pd.DataFrame,
                 ),
             ))
         fig.add_hline(y=0, line_dash="dash", line_color=THEME["hline"], line_width=1)
-        fig.update_layout(**_base_layout(len(codes)), yaxis_title=f"{gm} Growth (%)")
+        fig.update_layout(**_base_layout(), yaxis_title=f"{gm} Growth (%)")
 
     st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CFG)
 
@@ -417,13 +425,11 @@ def render_dist(sec_idx: int, data: pd.DataFrame,
     cmap = assign_colors(codes, labels)
 
     # ── Controls row ──────────────────────────────────────────────────────────
-    c1, _ = st.columns([3, 6])
-    with c1:
-        dist_mode = st.radio(
-            "Show as", ["₹ Crore", pct_label],
-            horizontal=True, label_visibility="collapsed",
-            key=f"dist_d_{sec_idx}",
-        )
+    dist_mode = st.radio(
+        "Show as", ["₹ Crore", pct_label],
+        horizontal=True, label_visibility="collapsed",
+        key=f"dist_d_{sec_idx}",
+    )
 
     # ── Legend above chart (HTML flex-wrap; takes exact space, no blank gap) ──
     _html_legend(_dc, labels, cmap)
@@ -478,6 +484,12 @@ def render_dist(sec_idx: int, data: pd.DataFrame,
     st.dataframe(
         tbl[["sector", "₹ Crore", "Share (%)"]].rename(columns={"sector": "Sector"}),
         hide_index=True, use_container_width=True,
+        column_config={
+            "Sector":    st.column_config.TextColumn("Sector"),
+            "₹ Crore":  st.column_config.TextColumn("₹ Crore",  width="small"),
+            "Share (%)": st.column_config.NumberColumn("Share %", width="small",
+                                                        format="%.1f"),
+        },
     )
 
 
@@ -549,24 +561,19 @@ all_dates   = sorted(df["date"].unique())
 latest_date = all_dates[-1]
 
 # ── Page header + theme toggle ─────────────────────────────────────────────────
-col_hdr, col_toggle = st.columns([12, 1])
-with col_hdr:
-    st.title("RBI Gross Bank Credit")
-    st.caption(
-        f"Source: RBI Sector/Industry-wise Bank Credit (SIBC) Return  |  "
-        f"Values in ₹ Crore  |  Latest data: **{date_label(latest_date)}**"
-    )
-    latest_bc = s1[(s1["code"] == "I") & (s1["date"] == latest_date)]["outstanding_cr"].values[0]
-    st.metric("Total Bank Credit", fmt_cr(latest_bc))
-
-with col_toggle:
-    # Spacer to push toggle down level with title
-    st.markdown("<div style='height:22px'></div>", unsafe_allow_html=True)
-    st.toggle(
-        "🌙" if not _dark else "☀️",
-        key="dark_mode",
-        help="Switch between light and dark theme",
-    )
+# Toggle is rendered first so it's fixed-positioned to top-right on all viewports
+st.toggle(
+    "🌙" if not _dark else "☀️",
+    key="dark_mode",
+    help="Switch between light and dark theme",
+)
+st.title("RBI Gross Bank Credit")
+st.caption(
+    f"Source: RBI Sector/Industry-wise Bank Credit (SIBC) Return  |  "
+    f"Values in ₹ Crore  |  Latest data: **{date_label(latest_date)}**"
+)
+latest_bc = s1[(s1["code"] == "I") & (s1["date"] == latest_date)]["outstanding_cr"].values[0]
+st.metric("Total Bank Credit", fmt_cr(latest_bc))
 
 st.divider()
 
