@@ -329,6 +329,15 @@ def fmt_cr(v: float) -> str:
     return f"₹{v / 1e5:.2f} L Cr"
 
 
+def _smart_unit(max_val: float):
+    """Return (divisor, axis_label, hover_unit, fmt_spec) based on magnitude."""
+    if max_val >= 1e5:
+        return 1e5, "₹ L Cr", "L Cr", ",.2f"
+    if max_val >= 1e3:
+        return 1e3, "₹ Th Cr", "Th Cr", ",.1f"
+    return 1.0, "₹ Crore", "Cr", ",.0f"
+
+
 def date_label(ts) -> str:
     return pd.Timestamp(ts).strftime("%b %Y")
 
@@ -504,6 +513,8 @@ def render_trend(sec_idx: int, data: pd.DataFrame,
     fig = go.Figure()
 
     if view == "Absolute":
+        _max = data[data["code"].isin(codes)]["outstanding_cr"].max() if not data.empty else 1.0
+        _div, _unit_label, _hover_unit, _fmt = _smart_unit(float(_max) if _max == _max else 1.0)
         for code in codes:
             seg = data[data["code"] == code].sort_values("date")
             if seg.empty:
@@ -511,16 +522,16 @@ def render_trend(sec_idx: int, data: pd.DataFrame,
             name = labels.get(code, code)
             short = _short_label(name)
             fig.add_trace(go.Scatter(
-                x=seg["date"], y=seg["outstanding_cr"],
+                x=seg["date"], y=seg["outstanding_cr"] / _div,
                 mode="lines+markers", name=short,
                 line=dict(color=cmap.get(code), width=2.5),
                 marker=dict(size=6),
                 hovertemplate=(
                     f"<b>{short}</b><br>%{{x|%b %Y}}<br>"
-                    "₹%{y:,.0f} Cr<extra></extra>"
+                    f"₹%{{y:{_fmt}}} {_hover_unit}<extra></extra>"
                 ),
             ))
-        fig.update_layout(**_base_layout(), yaxis_title="₹ Crore")
+        fig.update_layout(**_base_layout(), yaxis_title=_unit_label)
 
     else:
         gdf = compute_growth(data, "yoy" if gm == "YoY" else "fy")
@@ -560,9 +571,12 @@ def render_dist(sec_idx: int, data: pd.DataFrame,
     _dc = dist_codes if dist_codes is not None else codes
     cmap = assign_colors(codes, labels)
 
+    _qmax = data[data["code"].isin(_dc)]["outstanding_cr"].max() if not data.empty else 1.0
+    _div, _cr_label, _hover_unit, _fmt = _smart_unit(float(_qmax) if _qmax == _qmax else 1.0)
+
     # ── Controls row ──────────────────────────────────────────────────────────
     dist_mode = st.radio(
-        "Show as", ["₹ Crore", pct_label],
+        "Show as", [_cr_label, pct_label],
         horizontal=True, label_visibility="collapsed",
         key=f"dist_d_{sec_idx}",
     )
@@ -582,16 +596,16 @@ def render_dist(sec_idx: int, data: pd.DataFrame,
             })
     ddf = pd.DataFrame(rows)
 
-    if dist_mode != "₹ Crore":
+    if dist_mode == pct_label:
         totals = ddf.groupby("date")["value"].transform("sum")
         ddf["plot_val"] = ddf["value"] / totals.replace(0, float("nan")) * 100
         yax = dict(title=pct_label, range=[0, 100],
                    gridcolor=THEME["grid"], zeroline=False)
         hover_fmt = "%{y:.1f}%"
     else:
-        ddf["plot_val"] = ddf["value"]
-        yax = dict(title="₹ Crore", gridcolor=THEME["grid"], zeroline=False)
-        hover_fmt = "₹%{y:,.0f} Cr"
+        ddf["plot_val"] = ddf["value"] / _div
+        yax = dict(title=_cr_label, gridcolor=THEME["grid"], zeroline=False)
+        hover_fmt = f"₹%{{y:{_fmt}}} {_hover_unit}"
 
     fig2 = go.Figure()
     for code in _dc:
@@ -617,13 +631,13 @@ def render_dist(sec_idx: int, data: pd.DataFrame,
     tbl = ddf[ddf["date"] == latest_date].copy()
     total = tbl["value"].sum()
     tbl["Share (%)"] = (tbl["value"] / total * 100).round(1) if total else 0.0
-    tbl["₹ Crore"] = tbl["value"].apply(lambda v: f"{v:,.0f}")
+    tbl[_cr_label] = tbl["value"].apply(lambda v: f"{v / _div:{_fmt}}")
     st.dataframe(
-        tbl[["sector", "₹ Crore", "Share (%)"]].rename(columns={"sector": "Sector"}),
+        tbl[["sector", _cr_label, "Share (%)"]].rename(columns={"sector": "Sector"}),
         hide_index=True, use_container_width=True,
         column_config={
-            "Sector":    st.column_config.TextColumn("Sector"),
-            "₹ Crore":  st.column_config.TextColumn("₹ Crore",  width="small"),
+            "Sector":   st.column_config.TextColumn("Sector"),
+            _cr_label:  st.column_config.TextColumn(_cr_label, width="small"),
             "Share (%)": st.column_config.NumberColumn("Share %", width="small",
                                                         format="%.1f"),
         },
